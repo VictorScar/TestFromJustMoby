@@ -26,7 +26,7 @@ namespace ScarFramework.UI.ViewAnimators
 
         protected override void OnEndAnimation()
         {
-            Debug.Log("Animation ended!");
+           // Debug.Log("Animation ended!");
            // _view.CG.alpha = endValue;
         }
 
