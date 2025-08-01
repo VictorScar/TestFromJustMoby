@@ -11,6 +11,7 @@ public class GameServices : MonoBehaviour
 
     public static GameServices I { get; private set; }
     public UISystem UISystem => uiSystem;
+    public TowerCubeConfig Config => _cubeConfig;
 
     public void Init(TowerCubeConfig cubesConfig)
     {

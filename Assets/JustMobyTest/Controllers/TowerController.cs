@@ -6,15 +6,25 @@ using UnityEngine.EventSystems;
 
 public class TowerController : MonoBehaviour
 {
-    [SerializeField] private TowerView view;
+    private TowerView _view;
+    private Tower _tower;
 
-    public void Init()
+    public void Init(TowerView view)
     {
-        view.onClick += OnViewClicked;
+        _tower = new Tower();
+        _view = view;
+        _view.onPutElement += AddCube;
+        _tower.onCubeAdded += AddView;
     }
 
-    private void OnViewClicked(UIClickableView clickableView, PointerEventData eventData)
+    private void AddView(TowerCubeType cubeType, int heightLevel)
     {
-        Debug.Log("Tower view Click");
+        var cubeView = _view.AddCubeView(cubeType);
+        cubeView.Rect.position = Input.mousePosition;
+    }
+
+    private void AddCube(TowerCubeData cubeData, Vector3 pos)
+    {
+        _tower.AddCube(cubeData.CubeType, pos);
     }
 }

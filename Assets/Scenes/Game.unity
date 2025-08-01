@@ -199,6 +199,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _scrollbarConroller: {fileID: 857170390}
   _dragController: {fileID: 1384164989}
+  _towerController: {fileID: 726844526}
 --- !u!4 &648102971
 Transform:
   m_ObjectHideFlags: 0
@@ -214,6 +215,7 @@ Transform:
   m_Children:
   - {fileID: 857170391}
   - {fileID: 1384164990}
+  - {fileID: 726844525}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &726315531
@@ -308,6 +310,50 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &726844524
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 726844525}
+  - component: {fileID: 726844526}
+  m_Layer: 0
+  m_Name: tower controller
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &726844525
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 726844524}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 648102971}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &726844526
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 726844524}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e24c54d10d3477e42b01abb7271e243d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &834547040
 GameObject:
   m_ObjectHideFlags: 0
@@ -444,7 +490,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2da2b0928d5fb3140ae03455ae86962c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  viewPanel: {fileID: 0}
 --- !u!4 &1384164990
 Transform:
   m_ObjectHideFlags: 0

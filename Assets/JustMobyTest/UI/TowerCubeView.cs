@@ -1,9 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
+using ScarFramework.UI;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class TowerCubeView : MonoBehaviour
+public class TowerCubeView : UIView
 {
     [SerializeField] private Image icon;
     

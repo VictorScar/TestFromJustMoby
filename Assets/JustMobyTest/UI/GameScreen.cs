@@ -7,12 +7,15 @@ public class GameScreen : UIScreen
 {
     [SerializeField] private ScrollPanelView scrollPanelView;
     [SerializeField] private DragViewPanel dragViewPanel;
+    [SerializeField] private TowerView towerView;
     public ScrollPanelView ScrollViewPanel => scrollPanelView;
     public DragViewPanel DragViewPanel => dragViewPanel;
+    public TowerView TowerView => towerView;
 
     protected override void OnInit()
     {
         scrollPanelView.Init();
         dragViewPanel.Init();
+        towerView.Init();
     }
 }
