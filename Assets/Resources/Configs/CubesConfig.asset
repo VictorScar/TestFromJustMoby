@@ -1,0 +1,55 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6db75f8ab456e3741b980883e99469a4, type: 3}
+  m_Name: CubesConfig
+  m_EditorClassIdentifier: 
+  cubeDatas:
+  - CubeType: 1
+    Image: {fileID: 21300000, guid: 528481f3c9e1c0242ac39be1c948a0ff, type: 3}
+  - CubeType: 2
+    Image: {fileID: 21300000, guid: dded730495a39a643a1f0e8d174da4d1, type: 3}
+  - CubeType: 3
+    Image: {fileID: 21300000, guid: 458b4346f9f04b94381cecee029aa5f4, type: 3}
+  - CubeType: 4
+    Image: {fileID: 21300000, guid: 1aab6104a4a49c642a85b5d574416ff5, type: 3}
+  - CubeType: 5
+    Image: {fileID: 21300000, guid: e1c2a53e5db74704ab017ceb41b581aa, type: 3}
+  - CubeType: 6
+    Image: {fileID: 21300000, guid: 532e097fd432200449dd1839751497a8, type: 3}
+  - CubeType: 7
+    Image: {fileID: 21300000, guid: bcc480154a86bc346a211268e680f3d8, type: 3}
+  - CubeType: 8
+    Image: {fileID: 21300000, guid: 9a6a1f23e69a2324790c2991a3ae91c2, type: 3}
+  - CubeType: 9
+    Image: {fileID: 21300000, guid: 86d09320b4d6cce4d998b4a90fbfb090, type: 3}
+  - CubeType: 10
+    Image: {fileID: 21300000, guid: 506f5cbe674d59b47994adbb960bad6d, type: 3}
+  - CubeType: 11
+    Image: {fileID: 21300000, guid: f3e1bed34f9263b459397f4bac8838d4, type: 3}
+  - CubeType: 12
+    Image: {fileID: 21300000, guid: 4c6ed8c541cd72e449e8964b323c8837, type: 3}
+  - CubeType: 13
+    Image: {fileID: 21300000, guid: de620f9ab74659a45a5f4651d51dddd2, type: 3}
+  - CubeType: 14
+    Image: {fileID: 21300000, guid: d96917e6bf1ebfd43985fe20020e9218, type: 3}
+  - CubeType: 15
+    Image: {fileID: 21300000, guid: 18544c1cfaf03fe40a8faf855385cf0e, type: 3}
+  - CubeType: 16
+    Image: {fileID: 21300000, guid: c611a6ce7e6ffba45a4ae53ccae93bb3, type: 3}
+  - CubeType: 17
+    Image: {fileID: 21300000, guid: a4ad86010fdd6664fad615b48fc494e1, type: 3}
+  - CubeType: 18
+    Image: {fileID: 21300000, guid: 6c38cc7814c7159468801c46171601fd, type: 3}
+  - CubeType: 19
+    Image: {fileID: 21300000, guid: c00ac1c12b9df9c4f90d40f8fd8a0a0b, type: 3}
+  - CubeType: 20
+    Image: {fileID: 21300000, guid: b05d931ae58e2a34aac49b066ac8e2fa, type: 3}
