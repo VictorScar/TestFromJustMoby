@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a1a2ded7a867ec347b3cb5310ecdfd86, type: 3}
+  m_Name: ClickAnimator
+  m_EditorClassIdentifier: 
+  duration: 1
+  ease: 6
+  animators:
+  - {fileID: 11400000, guid: 0c6fe611868e78848bffdb178bafbab2, type: 2}
+  - {fileID: 11400000, guid: 6aa996218bc562247ad7b1652a61f9bc, type: 2}
