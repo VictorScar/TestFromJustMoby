@@ -198,16 +198,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _scrollbarConroller: {fileID: 857170390}
-  _dragController: {fileID: 1384164989}
+  dragController: {fileID: 1384164989}
   _towerController: {fileID: 726844526}
   towerData:
     CubesData:
     - CubeType: 2
-      Position: {x: 560, y: 0}
+      XPos: 50
+      Height: 0
     - CubeType: 19
-      Position: {x: 570, y: 1}
+      XPos: 40
+      Height: 1
     - CubeType: 11
-      Position: {x: 580, y: 2}
+      XPos: 55
+      Height: 2
     CubeSize: {x: 0, y: 0}
 --- !u!4 &648102971
 Transform:
@@ -361,6 +364,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e24c54d10d3477e42b01abb7271e243d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _tower:
+    cubesInTower: []
 --- !u!1 &834547040
 GameObject:
   m_ObjectHideFlags: 0
@@ -392,7 +397,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gameServices: {fileID: 429109644}
   game: {fileID: 648102970}
-  cubesConfig: {fileID: 11400000, guid: 57a40522c849e8044ae6d7299381e067, type: 2}
+  cubesesConfig: {fileID: 11400000, guid: 57a40522c849e8044ae6d7299381e067, type: 2}
 --- !u!4 &834547042
 Transform:
   m_ObjectHideFlags: 0

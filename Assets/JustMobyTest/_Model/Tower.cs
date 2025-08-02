@@ -3,16 +3,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[Serializable]
 public class Tower
 {
     [SerializeField] private List<TowerCube> cubesInTower = new List<TowerCube>();
     private float _xPos;
- 
 
-    public event Action<TowerCubeType, Vector2> onCubeAdded;
+
+    public event Action<TowerCube> onCubeAdded;
     public event Action<int> onCubeRemoved;
 
-    public TowerData Data
+    /*public TowerData Data
     {
         set
         {
@@ -22,54 +23,57 @@ public class Tower
             {
                 foreach (var data in cubesData)
                 {
-                    AddCube(data);
+                    AddCube(data.CubeType, data.XPos);
                 }
             }
         }
-    }
-    
-    public bool TryAddCube(TowerCubeType cubeType, Vector3 pos)
+    }*/
+
+    public bool TryAddCube(TowerCubeType cubeType, Vector3 pos, out TowerCube cube)
     {
-        if (cubesInTower.Count < 1)
+        if (ValidateAdditional(cubeType, pos))
         {
-            var finalCubePos = new Vector2(pos.x, 0);
-            
-            AddCube(new TowerCube
-            {
-                CubeType = cubeType,
-                Position = finalCubePos
-            });
-            return true;
-        }
-        else if( ValidateAdditional(pos))
-        {
-            var finalCubePos = new Vector2(pos.x, cubesInTower.Count);
-            AddCube(new TowerCube
-            {
-                CubeType = cubeType,
-                Position = finalCubePos
-            });
+            cube = AddCube(cubeType, pos.x);
             return true;
         }
 
+        cube = null;
         return false;
-
     }
 
-    private void AddCube(TowerCube cubeData)
+    private TowerCube AddCube(TowerCubeType cubeType, float xPos)
     {
-        cubesInTower.Add(cubeData);
-        onCubeAdded?.Invoke(cubeData.CubeType, cubeData.Position);
+        var cube = new TowerCube
+        {
+            CubeType = cubeType,
+            XPos = xPos,
+            Height =  cubesInTower.Count
+        };
+        cubesInTower.Add(cube);
+        onCubeAdded?.Invoke(cube);
+
+        return cube;
     }
 
-    private bool ValidateAdditional(Vector3 pos)
+    private bool ValidateAdditional(TowerCubeType cubeType, Vector2 pos)
     {
+        if (cubesInTower.Count > 0)
+        {
+            
+        }
         return true;
     }
 
     public void RemoveCube(TowerCube cube)
     {
+        var cubeHeight = cube.Height;
+
+        for (int i = cubeHeight; i < cubesInTower.Count; i++)
+        {
+            cubesInTower[i].Height -= 1;
+        }
         cubesInTower.Remove(cube);
-        onCubeRemoved?.Invoke(0);
+        
+        onCubeRemoved?.Invoke(cubeHeight);
     }
 }

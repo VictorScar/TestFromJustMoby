@@ -7,18 +7,18 @@ using UnityEngine.EventSystems;
 
 public class ScrollbarConroller : MonoBehaviour
 {
-    private TowerCubeConfig _cubesConfig;
+    private TowerCubesConfig _cubesesConfig;
     private ScrollPanelView _scrollPanel;
     private DragController _dragController;
 
     private Dictionary<UIDragable, CubeData> _scrollCubes = new Dictionary<UIDragable, CubeData>();
 
-    public void Init(DragController dragController, TowerCubeConfig cubesConfig)
+    public void Init(DragController dragController, TowerCubesConfig cubesesConfig)
     {
         _dragController = dragController;
         _scrollPanel = GameServices.I.UISystem.GetScreen<GameScreen>().ScrollViewPanel;
         ClearScrollViews();
-        CreateScrollElements(cubesConfig.CubeDatas);
+        CreateScrollElements(cubesesConfig.CubeDatas);
     }
 
     private void CreateScrollElements(CubeData[] cubeDatas)
@@ -43,7 +43,7 @@ public class ScrollbarConroller : MonoBehaviour
     {
         if (TryGetCubeData(view, out var data))
         {
-            _dragController.StartDrag(data);
+            _dragController.StartDrag(data.CubeType);
         }
     }
 

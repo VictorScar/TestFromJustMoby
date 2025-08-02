@@ -12,6 +12,7 @@ public class DragController : MonoBehaviour
     private CubeData _elementData;
     private bool _isDragging = false;
     private bool _isInitialized;
+    private TowerCubesConfig _towerCubesConfig;
 
     private void Update()
     {
@@ -31,19 +32,23 @@ public class DragController : MonoBehaviour
        
     }
 
-    public void Init(Vector2 cubeSize)
+    public void Init(TowerCubesConfig towerCubesConfig, Vector2 cubeSize)
     {
+        _towerCubesConfig = towerCubesConfig;
         _eventSystem = GameServices.I.UISystem.EventSystem;
         _viewPanel = GameServices.I.UISystem.GetScreen<GameScreen>().DragViewPanel;
         _viewPanel.Rect.sizeDelta = cubeSize;
         _isInitialized = true;
     }
 
-    public void StartDrag(CubeData cubeData)
+    public void StartDrag(TowerCubeType cubeType)
     {
-        _elementData = cubeData;
-        _viewPanel.Icon = cubeData.Image;
-        _isDragging = true;
+        if (_towerCubesConfig.TryGetData(cubeType, out var cubeData))
+        {
+            _elementData = cubeData;
+            _viewPanel.Icon = cubeData.Image;
+            _isDragging = true;
+        }
     }
 
     public void EndDragElement()

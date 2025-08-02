@@ -7,44 +7,66 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.Serialization;
 
-public class TowerView : UIClickableView, IInteractableElement
+public class TowerView : UIView, IInteractableElement
 {
     [SerializeField] private RectTransform root;
     [SerializeField] private TowerCubeView cubeViewPrefab;
     private float startOffset = 30f;
-    private TowerCubeConfig _config;
+    private TowerCubesConfig _config;
     private Vector2 _cubeSize;
+    private List<TowerCubeView> _views = new List<TowerCubeView>();
+
+    public event Action<TowerCubeView> onDragElement;
+    public event Action<CubeData, Vector3> onPutElement;
 
     public Vector2 CubeSize
     {
         set => _cubeSize = value;
     }
 
+    public TowerCubeView AddCubeView(Sprite image)
+    {
+        var cubeView = Instantiate(cubeViewPrefab, root);
+
+        cubeView.Icon = image;
+        cubeView.Size = _cubeSize;
+
+        // var localPosition = cubeView.Rect.InverseTransformPoint(new Vector3(xPos, height));
+        // cubeView.Rect.anchoredPosition = new Vector2(localPosition.x, _cubeSize.y * height + startOffset);
+        cubeView.onBeginDrag += OnDragCube;
+        return cubeView;
+    }
+
+    public void RemoveCubeView(TowerCubeView view)
+    {
+        _views.Remove(view);
+        view.onBeginDrag -= OnDragCube;
+        Destroy(view.gameObject);
+    }
+
+    public void SetCubePosition(TowerCubeView cubeView, Vector2 newPos)
+    {
+        var localPosition = rect.InverseTransformPoint(newPos);
+        cubeView.SetPosition(newPos);
+    }
+
     protected override void OnInit()
     {
+        ClearViews();
         _config = GameServices.I.Config;
     }
 
-    public event Action<CubeData, Vector3> onPutElement;
-
-    public TowerCubeView AddCubeView(TowerCubeType cubeType, Vector2 position)
+    private void ClearViews()
     {
-        var cube = Instantiate(cubeViewPrefab, root);
-
-        if (_config.GetData(cubeType, out var cubeData))
+        for (int i = 0; i < _views.Count; i++)
         {
-            cube.Data = cubeData;
-            cube.Size = _cubeSize;
+            RemoveCubeView(_views[i]);
         }
-
-        var localPosition = cube.Rect.InverseTransformPoint(position);
-        cube.Rect.anchoredPosition = new Vector2(localPosition.x, _cubeSize.y * position.y + startOffset);
-        return cube;
     }
 
-    protected override void OnPointerClick(PointerEventData eventData)
+    private void OnDragCube(PointerEventData eventData, UIDragable view)
     {
-        Debug.Log("Tower View Clicked!");
+        onDragElement?.Invoke(view as TowerCubeView);
     }
 
     public bool TryPutElement(CubeData elementData, Vector3 elementPosition)

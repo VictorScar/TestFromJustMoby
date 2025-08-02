@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 4041767243530854201}
   - component: {fileID: 7795448330401292602}
   m_Layer: 0
-  m_Name: ff
+  m_Name: tower cube view
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

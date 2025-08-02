@@ -4,10 +4,12 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [Serializable]
-public struct TowerCube
+public class TowerCube
 {
     public TowerCubeType CubeType;
-    public Vector2 Position;
+    //public Vector2 Position;
+    public float XPos;
+    public int Height;
 
     public static TowerCube Invalid =>
         new()
@@ -16,5 +18,15 @@ public struct TowerCube
         };
 
     public bool IsInvalid => CubeType == TowerCubeType.None;
+
+    public static bool operator ==(TowerCube a, TowerCube b)
+    {
+        return a.CubeType == b.CubeType;
+    }
+  
+    public static bool operator !=(TowerCube a, TowerCube b)
+    {
+        return !(a == b);
+    }
 
 }

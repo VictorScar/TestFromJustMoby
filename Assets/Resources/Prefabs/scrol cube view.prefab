@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 1295773300021332752}
   - component: {fileID: 129663249712842961}
   m_Layer: 0
-  m_Name: cube view
+  m_Name: scrol cube view
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

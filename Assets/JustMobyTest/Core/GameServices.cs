@@ -7,13 +7,13 @@ public class GameServices : MonoBehaviour
 {
     [SerializeField] private UISystem uiSystem;
     
-    private TowerCubeConfig _cubeConfig;
+    private TowerCubesConfig _cubesConfig;
 
     public static GameServices I { get; private set; }
     public UISystem UISystem => uiSystem;
-    public TowerCubeConfig Config => _cubeConfig;
+    public TowerCubesConfig Config => _cubesConfig;
 
-    public void Init(TowerCubeConfig cubesConfig)
+    public void Init(TowerCubesConfig cubesesConfig)
     {
         if (!I)
         {
@@ -24,7 +24,7 @@ public class GameServices : MonoBehaviour
             Destroy(gameObject);
         }
 
-        _cubeConfig = cubesConfig;
+        _cubesConfig = cubesesConfig;
         uiSystem.Init();
     }
 }
