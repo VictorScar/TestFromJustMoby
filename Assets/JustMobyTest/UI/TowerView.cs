@@ -11,7 +11,7 @@ public class TowerView : UIClickableView, IInteractableElement
 {
     [SerializeField] private RectTransform root;
     [SerializeField] private TowerCubeView cubeViewPrefab;
-    [SerializeField] private float startOffset=240f;
+    private float startOffset = 30f;
     private TowerCubeConfig _config;
     private Vector2 _cubeSize;
 
@@ -38,7 +38,7 @@ public class TowerView : UIClickableView, IInteractableElement
         }
 
         var localPosition = cube.Rect.InverseTransformPoint(position);
-        cube.Rect.anchoredPosition = new Vector2(localPosition.x, _cubeSize.y * position.y);
+        cube.Rect.anchoredPosition = new Vector2(localPosition.x, _cubeSize.y * position.y + startOffset);
         return cube;
     }
 
