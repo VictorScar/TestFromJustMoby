@@ -7,23 +7,59 @@ public class Tower
 {
     [SerializeField] private List<TowerCube> cubesInTower = new List<TowerCube>();
     private float _xPos;
+ 
 
-    public event Action<TowerCubeType, int> onCubeAdded;
+    public event Action<TowerCubeType, Vector2> onCubeAdded;
     public event Action<int> onCubeRemoved;
+
+    public TowerData Data
+    {
+        set
+        {
+            var cubesData = value.CubesData;
+
+            if (cubesData != null)
+            {
+                foreach (var data in cubesData)
+                {
+                    AddCube(data);
+                }
+            }
+        }
+    }
     
-    public void AddCube(TowerCubeType cubeType, Vector3 pos)
+    public bool TryAddCube(TowerCubeType cubeType, Vector3 pos)
     {
         if (cubesInTower.Count < 1)
         {
-            _xPos = pos.x;
+            var finalCubePos = new Vector2(pos.x, 0);
+            
+            AddCube(new TowerCube
+            {
+                CubeType = cubeType,
+                Position = finalCubePos
+            });
+            return true;
         }
-        else
+        else if( ValidateAdditional(pos))
         {
-            ValidateAdditional(pos);
+            var finalCubePos = new Vector2(pos.x, cubesInTower.Count);
+            AddCube(new TowerCube
+            {
+                CubeType = cubeType,
+                Position = finalCubePos
+            });
+            return true;
         }
-        var cube = new TowerCube(cubeType);
-        cubesInTower.Add(cube);
-        onCubeAdded?.Invoke(cube.CubeType, cubesInTower.Count-1);
+
+        return false;
+
+    }
+
+    private void AddCube(TowerCube cubeData)
+    {
+        cubesInTower.Add(cubeData);
+        onCubeAdded?.Invoke(cubeData.CubeType, cubeData.Position);
     }
 
     private bool ValidateAdditional(Vector3 pos)

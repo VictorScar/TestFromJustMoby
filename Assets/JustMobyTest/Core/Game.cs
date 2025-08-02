@@ -10,14 +10,17 @@ public class Game : MonoBehaviour
     [SerializeField] private ScrollbarConroller _scrollbarConroller;
     [SerializeField] private DragController _dragController;
     [SerializeField] private TowerController _towerController;
+    [SerializeField] private TowerData towerData;
     public void StartGame(TowerCubeConfig cubeConfig)
     {
-        _dragController.Init();
         _cubesConfig = cubeConfig;
+        _dragController.Init(cubeConfig.CubeSize);
         var gameScreen = GameServices.I.UISystem.GetScreen<GameScreen>();
         gameScreen.Show();
         var towerView = gameScreen.TowerView;
+        towerView.CubeSize = cubeConfig.CubeSize;
         _scrollbarConroller.Init(_dragController, _cubesConfig);
-        _towerController.Init(towerView);
+             
+        _towerController.Init(towerView, towerData);
     }
 }

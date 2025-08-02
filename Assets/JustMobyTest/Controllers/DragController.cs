@@ -9,7 +9,7 @@ public class DragController : MonoBehaviour
     private DragViewPanel _viewPanel;
     private EventSystem _eventSystem;
 
-    private TowerCubeData _elementData;
+    private CubeData _elementData;
     private bool _isDragging = false;
     private bool _isInitialized;
 
@@ -31,14 +31,15 @@ public class DragController : MonoBehaviour
        
     }
 
-    public void Init()
+    public void Init(Vector2 cubeSize)
     {
         _eventSystem = GameServices.I.UISystem.EventSystem;
         _viewPanel = GameServices.I.UISystem.GetScreen<GameScreen>().DragViewPanel;
+        _viewPanel.Rect.sizeDelta = cubeSize;
         _isInitialized = true;
     }
 
-    public void StartDrag(TowerCubeData cubeData)
+    public void StartDrag(CubeData cubeData)
     {
         _elementData = cubeData;
         _viewPanel.Icon = cubeData.Image;
@@ -48,13 +49,13 @@ public class DragController : MonoBehaviour
     public void EndDragElement()
     {
         _viewPanel.IsVisible = false;
-        TryPutElement(_elementData);
-        _elementData = TowerCubeData.Invalid;
+        TryPutElement(_elementData, Input.mousePosition);
+        _elementData = CubeData.Invalid;
         _isDragging = false;
     }
 
 
-    private bool TryPutElement(TowerCubeData elementData)
+    private bool TryPutElement(CubeData elementData, Vector3 elementPosition)
     {
         var pointerData = new PointerEventData(_eventSystem)
         {
@@ -68,7 +69,7 @@ public class DragController : MonoBehaviour
         {
             if (result.gameObject.TryGetComponent<IInteractableElement>(out var interactable))
             {
-                return interactable.TryPutElement(elementData);
+                return interactable.TryPutElement(elementData, elementPosition);
             }
         }
 

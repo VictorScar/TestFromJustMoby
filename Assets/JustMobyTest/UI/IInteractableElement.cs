@@ -4,5 +4,5 @@ using UnityEngine;
 
 public interface IInteractableElement
 {
-    bool TryPutElement(TowerCubeData elementData);
+    bool TryPutElement(CubeData elementData, Vector3 elementPosition);
 }

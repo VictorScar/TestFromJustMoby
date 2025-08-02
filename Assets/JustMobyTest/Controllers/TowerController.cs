@@ -1,30 +1,31 @@
-using System.Collections;
-using System.Collections.Generic;
-using ScarFramework.UI;
 using UnityEngine;
-using UnityEngine.EventSystems;
 
 public class TowerController : MonoBehaviour
 {
-    private TowerView _view;
+    private TowerView _towerView;
     private Tower _tower;
 
-    public void Init(TowerView view)
+    public void Init(TowerView view, TowerData towerData)
     {
+        _towerView = view;
         _tower = new Tower();
-        _view = view;
-        _view.onPutElement += AddCube;
+        _towerView.onPutElement += AddCube;
         _tower.onCubeAdded += AddView;
+
+        _tower.Data = towerData;
     }
 
-    private void AddView(TowerCubeType cubeType, int heightLevel)
+    private void AddView(TowerCubeType cubeType, Vector2 position)
     {
-        var cubeView = _view.AddCubeView(cubeType);
-        cubeView.Rect.position = Input.mousePosition;
+        var cubeView = _towerView.AddCubeView(cubeType, position);
     }
 
-    private void AddCube(TowerCubeData cubeData, Vector3 pos)
+    private void AddCube(CubeData cubeData, Vector3 pos)
     {
-        _tower.AddCube(cubeData.CubeType, pos);
+        _tower.TryAddCube(cubeData.CubeType, pos);
+    }
+
+    private void RemoveCube()
+    {
     }
 }

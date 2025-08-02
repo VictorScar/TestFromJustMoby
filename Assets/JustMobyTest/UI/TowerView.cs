@@ -10,25 +10,35 @@ using UnityEngine.Serialization;
 public class TowerView : UIClickableView, IInteractableElement
 {
     [SerializeField] private RectTransform root;
-    [SerializeField]private TowerCubeView cubeViewPrefab;
-    
+    [SerializeField] private TowerCubeView cubeViewPrefab;
+    [SerializeField] private float startOffset=240f;
     private TowerCubeConfig _config;
+    private Vector2 _cubeSize;
+
+    public Vector2 CubeSize
+    {
+        set => _cubeSize = value;
+    }
 
     protected override void OnInit()
     {
         _config = GameServices.I.Config;
     }
 
-    public event Action<TowerCubeData, Vector3> onPutElement;
-    
-    public TowerCubeView AddCubeView(TowerCubeType cubeType)
+    public event Action<CubeData, Vector3> onPutElement;
+
+    public TowerCubeView AddCubeView(TowerCubeType cubeType, Vector2 position)
     {
         var cube = Instantiate(cubeViewPrefab, root);
-        
-         if(_config.GetData(cubeType, out var cubeData))
-         {
-             cube.Data = cubeData;
-         }
+
+        if (_config.GetData(cubeType, out var cubeData))
+        {
+            cube.Data = cubeData;
+            cube.Size = _cubeSize;
+        }
+
+        var localPosition = cube.Rect.InverseTransformPoint(position);
+        cube.Rect.anchoredPosition = new Vector2(localPosition.x, _cubeSize.y * position.y);
         return cube;
     }
 
@@ -37,10 +47,11 @@ public class TowerView : UIClickableView, IInteractableElement
         Debug.Log("Tower View Clicked!");
     }
 
-    public bool TryPutElement(TowerCubeData elementData)
+    public bool TryPutElement(CubeData elementData, Vector3 elementPosition)
     {
-        onPutElement?.Invoke(elementData, Input.mousePosition);
-        Debug.Log("Create Cube!");
+        //var relativePosition = elementPosition - root.position;
+        onPutElement?.Invoke(elementData, elementPosition);
+        Debug.Log("Put Cube!");
         return true;
     }
 }

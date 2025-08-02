@@ -6,11 +6,15 @@ using UnityEngine;
 [Serializable]
 public struct TowerCube
 {
-    private TowerCubeType _cubeType;
-    public TowerCubeType CubeType => _cubeType;
+    public TowerCubeType CubeType;
+    public Vector2 Position;
 
-    public TowerCube(TowerCubeType cubeType)
-    {
-        _cubeType = cubeType;
-    }
+    public static TowerCube Invalid =>
+        new()
+        {
+            CubeType = TowerCubeType.None
+        };
+
+    public bool IsInvalid => CubeType == TowerCubeType.None;
+
 }

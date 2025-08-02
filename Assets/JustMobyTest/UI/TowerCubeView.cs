@@ -4,20 +4,25 @@ using ScarFramework.UI;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class TowerCubeView : UIView
+public class TowerCubeView : UIDragable
 {
     [SerializeField] private Image icon;
     
-    private TowerCubeData _data;
+    private CubeData _data;
     
     
 
-    public TowerCubeData Data
+    public CubeData Data
     {
         set
         {
             _data = value;
             icon.sprite = value.Image;
         }
+    }
+
+    public Vector2 Size
+    {
+        set => Rect.sizeDelta = value;
     }
 }
