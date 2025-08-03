@@ -65,12 +65,12 @@ public class TowerController : MonoBehaviour
 
         if (view)
         {
-            view.SetPosition(pos);
+            view.SetPosition(relativePosition);
 
             if (_tower.TryAddCube(cubeData, out var cube, out var reason))
             {
                 AddCubePair(cube, view);
-                _towerView.SetCubePosition(view, new Vector2(cube.XPos, cube.Height * _cubesConfig.CubeSize.y));
+                view.SetPosition(new Vector2(cube.XPos, cube.Height * _cubesConfig.CubeSize.y), false);
                 //view.SetPosition(pos, false);
             }
             else

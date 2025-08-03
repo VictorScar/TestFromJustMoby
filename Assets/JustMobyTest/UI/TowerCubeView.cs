@@ -1,6 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
-using DG.Tweening;
+using ScarFramework.Button;
 using ScarFramework.UI;
 using UnityEngine;
 using UnityEngine.UI;
@@ -8,7 +6,8 @@ using UnityEngine.UI;
 public class TowerCubeView : UIDragable
 {
     [SerializeField] private Image icon;
-    //animator
+    [SerializeField] private TowerCubeAnimator animator;
+    [SerializeField] private Vector2 targetPos;
 
     public Sprite Icon
     {
@@ -24,24 +23,28 @@ public class TowerCubeView : UIDragable
     {
         if (immediately)
         {
+            rect.anchoredPosition = newPos;
         }
         else
         {
+            animator.PlayAnimation(Rect, CubeAnimationID.Addition, newPos);
         }
-
-
-        rect.anchoredPosition = newPos;
     }
 
     public void Fall(string failtureReason)
     {
         Debug.Log("Fall! Reason is " + failtureReason);
-       // rect.DOMove(rect.position - transform.up * 50f, 0.5f).OnComplete(DestroyCube);
-       DestroyCube();
+        DestroyCube();
     }
 
     private void DestroyCube()
     {
         Destroy(gameObject);
+    }
+
+    [Button("SetPos")]
+    public void SetPosTest()
+    {
+        SetPosition(targetPos, false);
     }
 }

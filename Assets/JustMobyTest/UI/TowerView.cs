@@ -30,9 +30,6 @@ public class TowerView : UIView, IInteractableElement
 
         cubeView.Icon = image;
         cubeView.Size = _cubeSize;
-
-        // var localPosition = cubeView.Rect.InverseTransformPoint(new Vector3(xPos, height));
-        // cubeView.Rect.anchoredPosition = new Vector2(localPosition.x, _cubeSize.y * height + startOffset);
         cubeView.onBeginDrag += OnDragCube;
         return cubeView;
     }
@@ -42,12 +39,6 @@ public class TowerView : UIView, IInteractableElement
         _views.Remove(view);
         view.onBeginDrag -= OnDragCube;
         Destroy(view.gameObject);
-    }
-
-    public void SetCubePosition(TowerCubeView cubeView, Vector2 newPos)
-    {
-        var localPosition = rect.InverseTransformPoint(newPos);
-        cubeView.SetPosition(newPos);
     }
 
     protected override void OnInit()
@@ -71,7 +62,6 @@ public class TowerView : UIView, IInteractableElement
 
     public bool TryPutElement(CubeConfigData elementConfigData, Vector3 elementPosition)
     {
-        //var relativePosition = elementPosition - root.position;
         onPutElement?.Invoke(elementConfigData, elementPosition);
         Debug.Log("Put Cube!");
         return true;
