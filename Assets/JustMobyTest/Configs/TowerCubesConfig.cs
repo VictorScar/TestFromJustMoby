@@ -5,24 +5,24 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "GameConfigs/CubeConfig", fileName = "CubesConfig")]
 public class TowerCubesConfig : ScriptableObject
 {
-    [SerializeField] private CubeData[] cubeDatas;
+    [SerializeField] private CubeConfigData[] cubeDatas;
     [SerializeField] private Vector2 cubesSize;
 
-    public CubeData[] CubeDatas => cubeDatas;
+    public CubeConfigData[] CubeDatas => cubeDatas;
     public Vector2 CubeSize => cubesSize;
     
-    public bool TryGetData(TowerCubeType cubeType, out CubeData cubeData)
+    public bool TryGetData(TowerCubeType cubeType, out CubeConfigData cubeConfigData)
     {
         foreach (var data in cubeDatas)
         {
             if (data.CubeType == cubeType)
             {
-                cubeData = data;
+                cubeConfigData = data;
                 return true;
             }
         }
 
-        cubeData = new CubeData();
+        cubeConfigData = new CubeConfigData();
         return false;
     }
 }

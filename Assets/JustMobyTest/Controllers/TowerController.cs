@@ -15,52 +15,59 @@ public class TowerController : MonoBehaviour
         _cubesConfig = cubesConfig;
         _towerView = view;
         _dragController = dragController;
-        _tower = new Tower();
+        _tower = new Tower(_cubesConfig.CubeSize);
         _towerView.onPutElement += TryAddCube;
         _towerView.onDragElement += OnDragCube;
-        // _tower.onCubeAdded += AddCubePair;
 
         SetStartCubeData(towerData);
     }
 
     private void SetStartCubeData(TowerData towerData)
     {
-        var cubesData = towerData.CubesData;
+        var cubesInfo = towerData.CubesInfo;
 
-        if (cubesData != null)
+        if (cubesInfo != null)
         {
-            // _tower.Data = towerData;
-
-            for (var i = 0; i < cubesData.Length; i++)
+            for (var i = 0; i < cubesInfo.Length; i++)
             {
-                var data = cubesData[i];
+                var info = cubesInfo[i];
+                var data = new CubeData
+                {
+                    CubeType = info.CubeType,
+                    Position = new Vector2(info.Position.x, i * _cubesConfig.CubeSize.y)
+                };
+
                 if (_cubesConfig.TryGetData(data.CubeType, out var cubeConfigData))
                 {
                     var view = _towerView.AddCubeView(cubeConfigData.Image);
                     view.Size = _cubesConfig.CubeSize;
-                    _towerView.SetCubePosition(view, new Vector2(data.XPos, data.Height * _cubesConfig.CubeSize.y));
-                    //view.SetPosition(new Vector2(data.XPos, data.Height*_cubesConfig.CubeSize.y));
+                   
 
-                    if (_tower.TryAddCube(data.CubeType, new Vector2(data.XPos, data.Height), out var newCube))
+                    if (_tower.TryAddCube(data, out var newCube, out var failtureReason))
                     {
                         AddCubePair(newCube, view);
+                        view.SetPosition(new Vector2(newCube.XPos, newCube.Height * _cubesConfig.CubeSize.y));
                     }
                 }
             }
         }
     }
 
-    private void TryAddCube(CubeData cubeData, Vector3 pos)
+    private void TryAddCube(CubeConfigData cubeConfigData, Vector3 pos)
     {
-        var view = AddView(cubeData.CubeType);
-
+        var view = AddView(cubeConfigData.CubeType);
         var relativePosition = _towerView.Rect.InverseTransformPoint(pos);
+        var cubeData = new CubeData
+        {
+            CubeType = cubeConfigData.CubeType,
+            Position = relativePosition
+        };
 
         if (view)
         {
             view.SetPosition(pos);
 
-            if (_tower.TryAddCube(cubeData.CubeType, relativePosition, out var cube))
+            if (_tower.TryAddCube(cubeData, out var cube, out var reason))
             {
                 AddCubePair(cube, view);
                 _towerView.SetCubePosition(view, new Vector2(cube.XPos, cube.Height * _cubesConfig.CubeSize.y));
@@ -68,7 +75,7 @@ public class TowerController : MonoBehaviour
             }
             else
             {
-                view.Fall();
+                view.Fall(reason);
             }
         }
     }

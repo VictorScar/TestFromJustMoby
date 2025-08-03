@@ -201,16 +201,13 @@ MonoBehaviour:
   dragController: {fileID: 1384164989}
   _towerController: {fileID: 726844526}
   towerData:
-    CubesData:
+    CubesInfo:
     - CubeType: 2
-      XPos: 50
-      Height: 0
-    - CubeType: 19
-      XPos: 40
-      Height: 1
-    - CubeType: 11
-      XPos: 55
-      Height: 2
+      Position: {x: 0, y: 0}
+    - CubeType: 5
+      Position: {x: 5, y: 1}
+    - CubeType: 16
+      Position: {x: -5, y: 2}
     CubeSize: {x: 0, y: 0}
 --- !u!4 &648102971
 Transform:

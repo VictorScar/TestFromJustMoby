@@ -33,9 +33,9 @@ public class TowerCubeView : UIDragable
         rect.anchoredPosition = newPos;
     }
 
-    public void Fall()
+    public void Fall(string failtureReason)
     {
-        Debug.Log("Fall!");
+        Debug.Log("Fall! Reason is " + failtureReason);
        // rect.DOMove(rect.position - transform.up * 50f, 0.5f).OnComplete(DestroyCube);
        DestroyCube();
     }

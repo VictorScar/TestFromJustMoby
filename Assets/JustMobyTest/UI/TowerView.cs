@@ -17,7 +17,7 @@ public class TowerView : UIView, IInteractableElement
     private List<TowerCubeView> _views = new List<TowerCubeView>();
 
     public event Action<TowerCubeView> onDragElement;
-    public event Action<CubeData, Vector3> onPutElement;
+    public event Action<CubeConfigData, Vector3> onPutElement;
 
     public Vector2 CubeSize
     {
@@ -69,10 +69,10 @@ public class TowerView : UIView, IInteractableElement
         onDragElement?.Invoke(view as TowerCubeView);
     }
 
-    public bool TryPutElement(CubeData elementData, Vector3 elementPosition)
+    public bool TryPutElement(CubeConfigData elementConfigData, Vector3 elementPosition)
     {
         //var relativePosition = elementPosition - root.position;
-        onPutElement?.Invoke(elementData, elementPosition);
+        onPutElement?.Invoke(elementConfigData, elementPosition);
         Debug.Log("Put Cube!");
         return true;
     }

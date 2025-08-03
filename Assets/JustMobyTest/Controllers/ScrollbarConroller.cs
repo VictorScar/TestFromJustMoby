@@ -11,7 +11,7 @@ public class ScrollbarConroller : MonoBehaviour
     private ScrollPanelView _scrollPanel;
     private DragController _dragController;
 
-    private Dictionary<UIDragable, CubeData> _scrollCubes = new Dictionary<UIDragable, CubeData>();
+    private Dictionary<UIDragable, CubeConfigData> _scrollCubes = new Dictionary<UIDragable, CubeConfigData>();
 
     public void Init(DragController dragController, TowerCubesConfig cubesesConfig)
     {
@@ -21,7 +21,7 @@ public class ScrollbarConroller : MonoBehaviour
         CreateScrollElements(cubesesConfig.CubeDatas);
     }
 
-    private void CreateScrollElements(CubeData[] cubeDatas)
+    private void CreateScrollElements(CubeConfigData[] cubeDatas)
     {
         if (cubeDatas != null)
         {
@@ -32,11 +32,11 @@ public class ScrollbarConroller : MonoBehaviour
         }
     }
 
-    private void CreateViewElement(CubeData elementData)
+    private void CreateViewElement(CubeConfigData elementConfigData)
     {
-        var view = _scrollPanel.CreateView(elementData.Image);
+        var view = _scrollPanel.CreateView(elementConfigData.Image);
         view.onBeginDrag += OnCubeStartDragging;
-        _scrollCubes.Add(view, elementData);
+        _scrollCubes.Add(view, elementConfigData);
     }
 
     private void OnCubeStartDragging(PointerEventData eventData, UIDragable view)
@@ -47,15 +47,15 @@ public class ScrollbarConroller : MonoBehaviour
         }
     }
 
-    private bool TryGetCubeData(UIDragable view, out CubeData cubeData)
+    private bool TryGetCubeData(UIDragable view, out CubeConfigData cubeConfigData)
     {
         if (_scrollCubes.TryGetValue(view, out var data))
         {
-            cubeData = data;
+            cubeConfigData = data;
             return true;
         }
 
-        cubeData = CubeData.Invalid;
+        cubeConfigData = CubeConfigData.Invalid;
         return false;
     }
 

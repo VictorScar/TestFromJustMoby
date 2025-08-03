@@ -7,33 +7,54 @@ using UnityEngine;
 public class Tower
 {
     [SerializeField] private List<TowerCube> cubesInTower = new List<TowerCube>();
-    private float _xPos;
+    private Vector2 _cubeSize;
 
+    private delegate bool ValidationDelegate(CubeData data, out string reason);
 
+    private List<ValidationDelegate> _validators = new List<ValidationDelegate>();
     public event Action<TowerCube> onCubeAdded;
     public event Action<int> onCubeRemoved;
 
-    /*public TowerData Data
+    public Tower(Vector2 cubeSize)
     {
-        set
-        {
-            var cubesData = value.CubesData;
+        _cubeSize = cubeSize;
 
-            if (cubesData != null)
+        _validators.Add((CubeData d, out string reason) =>
+        {
+            if (Mathf.Abs(cubesInTower[cubesInTower.Count - 1].XPos - d.Position.x) <= 0.5f * _cubeSize.x)
             {
-                foreach (var data in cubesData)
-                {
-                    AddCube(data.CubeType, data.XPos);
-                }
+                reason = "";
+                return true;
             }
-        }
-    }*/
-
-    public bool TryAddCube(TowerCubeType cubeType, Vector3 pos, out TowerCube cube)
-    {
-        if (ValidateAdditional(cubeType, pos))
+            else
+            {
+                reason = "position X is out of range";
+                return false;
+            }
+            //return Mathf.Abs(cubesInTower[cubesInTower.Count - 1].XPos - d.Position.x) <= 0.5f * _cubeSize.x;
+        });
+        _validators.Add((CubeData d, out string reason) =>
         {
-            cube = AddCube(cubeType, pos.x);
+            if (d.Position.y >= (cubesInTower.Count) * cubeSize.y - 0.1f * cubeSize.y)
+            {
+                reason = "";
+                return true;
+            }
+            else
+            {
+                reason = "Pos Y is too low";
+                return false;
+            }
+            // return d.Position.y >= (cubesInTower.Count) * cubeSize.y - 0.1f * cubeSize.y;
+        });
+        //_validators.Add((d) => cubesInTower[cubesInTower.Count - 1].CubeType == d.CubeType);
+    }
+
+    public bool TryAddCube(CubeData cubeData, out TowerCube cube, out string failtureReason)
+    {
+        if (ValidateAddition(cubeData, out failtureReason))
+        {
+            cube = AddCube(cubeData.CubeType, cubeData.Position.x);
             return true;
         }
 
@@ -47,7 +68,7 @@ public class Tower
         {
             CubeType = cubeType,
             XPos = xPos,
-            Height =  cubesInTower.Count
+            Height = cubesInTower.Count
         };
         cubesInTower.Add(cube);
         onCubeAdded?.Invoke(cube);
@@ -55,12 +76,21 @@ public class Tower
         return cube;
     }
 
-    private bool ValidateAdditional(TowerCubeType cubeType, Vector2 pos)
+    private bool ValidateAddition(CubeData cubeData, out string failtureReason)
     {
         if (cubesInTower.Count > 0)
         {
+            foreach (var validator in _validators)
+            {
+                if (!validator(cubeData, out failtureReason))
+                {
+                    return false;
+                }
+            }
             
         }
+
+        failtureReason = "";
         return true;
     }
 
@@ -72,8 +102,9 @@ public class Tower
         {
             cubesInTower[i].Height -= 1;
         }
+
         cubesInTower.Remove(cube);
-        
+
         onCubeRemoved?.Invoke(cubeHeight);
     }
 }

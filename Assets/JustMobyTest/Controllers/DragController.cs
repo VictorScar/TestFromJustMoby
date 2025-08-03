@@ -9,7 +9,7 @@ public class DragController : MonoBehaviour
     private DragViewPanel _viewPanel;
     private EventSystem _eventSystem;
 
-    private CubeData _elementData;
+    private CubeConfigData _elementConfigData;
     private bool _isDragging = false;
     private bool _isInitialized;
     private TowerCubesConfig _towerCubesConfig;
@@ -45,7 +45,7 @@ public class DragController : MonoBehaviour
     {
         if (_towerCubesConfig.TryGetData(cubeType, out var cubeData))
         {
-            _elementData = cubeData;
+            _elementConfigData = cubeData;
             _viewPanel.Icon = cubeData.Image;
             _isDragging = true;
         }
@@ -54,13 +54,13 @@ public class DragController : MonoBehaviour
     public void EndDragElement()
     {
         _viewPanel.IsVisible = false;
-        TryPutElement(_elementData, Input.mousePosition);
-        _elementData = CubeData.Invalid;
+        TryPutElement(_elementConfigData, Input.mousePosition);
+        _elementConfigData = CubeConfigData.Invalid;
         _isDragging = false;
     }
 
 
-    private bool TryPutElement(CubeData elementData, Vector3 elementPosition)
+    private bool TryPutElement(CubeConfigData elementConfigData, Vector3 elementPosition)
     {
         var pointerData = new PointerEventData(_eventSystem)
         {
@@ -74,7 +74,7 @@ public class DragController : MonoBehaviour
         {
             if (result.gameObject.TryGetComponent<IInteractableElement>(out var interactable))
             {
-                return interactable.TryPutElement(elementData, elementPosition);
+                return interactable.TryPutElement(elementConfigData, elementPosition);
             }
         }
 
