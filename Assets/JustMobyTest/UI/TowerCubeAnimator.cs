@@ -1,17 +1,20 @@
 using System.Collections;
 using System.Collections.Generic;
+using DG.Tweening;
 using UnityEngine;
 
 public class TowerCubeAnimator : MonoBehaviour
 {
    [SerializeField] private CubeAnimation[] animations;
 
-   public void PlayAnimation(RectTransform transform, CubeAnimationID animationID, Vector3 newPos)
+   public Tween PlayAnimation(RectTransform transform, CubeAnimationID animationID, Vector3 newPos)
    {
       if (TryGetAnimationByID(animationID, out var animation))
       {
-         animation.Play(transform, newPos);
+         return animation.Play(transform, newPos);
       }
+
+      return null;
    }
 
    private bool TryGetAnimationByID(CubeAnimationID id, out CubeAnimation cubeAnimation)

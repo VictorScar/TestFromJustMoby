@@ -1,5 +1,60 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &3239551933131110168
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2441084771937220720}
+  - component: {fileID: 6243924942243690800}
+  m_Layer: 0
+  m_Name: fall
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &2441084771937220720
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3239551933131110168}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8341011690027912380}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &6243924942243690800
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3239551933131110168}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 87808ef8f6ea3e847997a94669e85dc3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  animationID: 2
+  ease: 5
+  _moveDuration: 1
+  _scaleDuration: 0.2
+  endRotation: {x: 0, y: 0, z: -125}
+  endScale: {x: 1.2, y: 1.2}
+  endPoint: {x: 20, y: 40}
 --- !u!1 &4014030287939048978
 GameObject:
   m_ObjectHideFlags: 0
@@ -120,7 +175,7 @@ GameObject:
   - component: {fileID: 1706955517387793417}
   - component: {fileID: 5307032410106110583}
   m_Layer: 0
-  m_Name: adiition
+  m_Name: moving
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -157,10 +212,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ffbe51122dff7804aabccb9324f0b023, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 600
   animationID: 1
   ease: 30
-  durationf: 5
+  speed: 600
 --- !u!1 &5983591326814150533
 GameObject:
   m_ObjectHideFlags: 0
@@ -191,6 +245,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1706955517387793417}
+  - {fileID: 2441084771937220720}
   m_Father: {fileID: 390999650564175289}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
@@ -212,3 +267,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   animations:
   - {fileID: 5307032410106110583}
+  - {fileID: 6243924942243690800}

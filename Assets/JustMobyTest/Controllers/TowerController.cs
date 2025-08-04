@@ -96,7 +96,7 @@ public class TowerController : MonoBehaviour
         {
             var view = _cubePairs[i].View;
             view.SetPosition(new Vector2(view.Rect.anchoredPosition.x,
-                view.Rect.anchoredPosition.y - _cubesConfig.CubeSize.y));
+                view.Rect.anchoredPosition.y - _cubesConfig.CubeSize.y), false);
         }
     }
 

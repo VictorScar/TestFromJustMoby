@@ -1,3 +1,4 @@
+using DG.Tweening;
 using ScarFramework.Button;
 using ScarFramework.UI;
 using UnityEngine;
@@ -27,14 +28,15 @@ public class TowerCubeView : UIDragable
         }
         else
         {
-            animator.PlayAnimation(Rect, CubeAnimationID.Addition, newPos);
+            animator.PlayAnimation(Rect, CubeAnimationID.Move, newPos);
         }
     }
 
     public void Fall(string failtureReason)
     {
         Debug.Log("Fall! Reason is " + failtureReason);
-        DestroyCube();
+        animator.PlayAnimation(rect, CubeAnimationID.Destroy, new Vector2(100f,0f)).OnKill(DestroyCube);
+        //DestroyCube();
     }
 
     private void DestroyCube()

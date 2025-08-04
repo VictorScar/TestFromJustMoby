@@ -5,7 +5,7 @@ using UnityEngine;
 public enum CubeAnimationID
 {
   None,
-  Addition,
-  Fall,
+  Move,
+  Destroy,
   Upload
 }
