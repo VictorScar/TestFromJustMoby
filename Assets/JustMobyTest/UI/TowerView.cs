@@ -59,7 +59,7 @@ public class TowerView : UIView, IInteractableElement
         onDragElement?.Invoke(view as TowerCubeView);
     }
 
-    public bool TryPutElement(CubeConfigData elementConfigData, Vector3 elementPosition)
+    public bool TryPutElement(CubeConfigData elementConfigData, Vector3 elementPosition, DragSourceType dragSourceType)
     {
         onPutElement?.Invoke(elementConfigData, elementPosition);
         Debug.Log("Put Cube!");

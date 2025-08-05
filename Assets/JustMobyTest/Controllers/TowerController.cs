@@ -117,7 +117,7 @@ public class TowerController : MonoBehaviour
     {
         if (TryGetCubePair(cubeView, out var cubePair))
         {
-            _dragController.StartDrag(cubePair.Model.CubeType);
+            _dragController.StartDrag(cubePair.Model.CubeType, DragSourceType.FromTower);
 
             RemoveCube(cubePair);
         }

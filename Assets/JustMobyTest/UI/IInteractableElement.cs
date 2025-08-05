@@ -6,5 +6,5 @@ using UnityEngine;
 public interface IInteractableElement
 {
     public event Action<CubeConfigData, Vector3> onPutElement;
-    bool TryPutElement(CubeConfigData elementConfigData, Vector3 elementPosition);
+    bool TryPutElement(CubeConfigData elementConfigData, Vector3 elementPosition, DragSourceType dragSourceType);
 }

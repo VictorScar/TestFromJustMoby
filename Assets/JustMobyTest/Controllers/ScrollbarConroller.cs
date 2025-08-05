@@ -43,7 +43,7 @@ public class ScrollbarConroller : MonoBehaviour
     {
         if (TryGetCubeData(view, out var data))
         {
-            _dragController.StartDrag(data.CubeType);
+            _dragController.StartDrag(data.CubeType, DragSourceType.FromScroll);
         }
     }
 

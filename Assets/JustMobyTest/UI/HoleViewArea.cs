@@ -54,10 +54,15 @@ public class HoleViewArea : UIView, IInteractableElement
     }
 
 
-    public bool TryPutElement(CubeConfigData elementConfigData, Vector3 elementPosition)
+    public bool TryPutElement(CubeConfigData elementConfigData, Vector3 elementPosition, DragSourceType dragSourceType)
     {
-        Debug.Log("Try put in Hole");
-        onPutElement?.Invoke(elementConfigData, elementPosition);
+        if (dragSourceType == DragSourceType.FromTower)
+        {
+            Debug.Log("Try put in Hole");
+            onPutElement?.Invoke(elementConfigData, elementPosition);
+            return false;
+        }
+
         return false;
     }
 }
