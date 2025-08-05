@@ -5,9 +5,9 @@ using UnityEngine;
 public class TowerController : MonoBehaviour
 {
     [SerializeField] private Tower _tower;
-
+    [SerializeField] private float minVerticalOffset = 0.5f;
     private ICubeValidator[] _validators;
-  
+
     private TowerView _towerView;
     private DragController _dragController;
     private List<TowerCubePair> _cubePairs = new List<TowerCubePair>();
@@ -22,11 +22,12 @@ public class TowerController : MonoBehaviour
         _validators = new ICubeValidator[]
         {
             new XPositionValidator(_cubesConfig.CubeSize.x),
-            new HeightCubeValidator(_cubesConfig.CubeSize.y),
+            new HeightCubeValidator(minVerticalOffset),
             new TowerHeightValidator(_cubesConfig.CubeSize.y, _towerView.Rect.rect.size.y)
         };
-        
+
         _tower = new Tower(_cubesConfig.CubeSize, _validators);
+
         _towerView.onPutElement += TryAddCube;
         _towerView.onDragElement += OnDragCube;
 
@@ -45,7 +46,7 @@ public class TowerController : MonoBehaviour
                 var data = new CubeData
                 {
                     CubeType = info.CubeType,
-                    Position = new Vector2(info.Position.x, i * _cubesConfig.CubeSize.y)
+                    Position = new Vector2(info.Position.x, i)
                 };
 
                 if (_cubesConfig.TryGetData(data.CubeType, out var cubeConfigData))
@@ -71,7 +72,7 @@ public class TowerController : MonoBehaviour
         var cubeData = new CubeData
         {
             CubeType = cubeConfigData.CubeType,
-            Position = relativePosition
+            Position = new Vector2(relativePosition.x, relativePosition.y / _cubesConfig.CubeSize.y)
         };
 
         if (view)
@@ -99,22 +100,34 @@ public class TowerController : MonoBehaviour
         _cubePairs.Remove(cubePair);
 
         UpdateCubesStates(removeCubeHeight);
+        UpdateViewsPositions(removeCubeHeight);
     }
 
     private void UpdateCubesStates(int removeCubeHeight)
     {
-        for (int i = removeCubeHeight; i < _cubePairs.Count; i++)
+        Debug.Log(removeCubeHeight);
+        if (removeCubeHeight > 0 && removeCubeHeight < _cubePairs.Count)
         {
-            if (i > 0)
+            var cube = _cubePairs[removeCubeHeight].Model;
+            var validatedCubeData = new CubeData
             {
-                //_cubePairs[i].Model.XPos
-            }
-           
-        }
+                CubeType = cube.CubeType,
+                Position = new Vector2(cube.XPos,
+                    cube.Height)
+            };
 
-        UpdateViewsPositions(removeCubeHeight);
+
+            if (!_tower.ValidateAddition(validatedCubeData, out var reason))
+            {
+                RemoveCube(_cubePairs[removeCubeHeight]);
+                var view = AddView(validatedCubeData.CubeType);
+                view.SetPosition(new Vector2(validatedCubeData.Position.x,
+                    validatedCubeData.Position.y * _cubesConfig.CubeSize.y));
+                view.Fall();
+            }
+        }
     }
-    
+
     private void UpdateViewsPositions(int removeCubeHeight)
     {
         for (int i = removeCubeHeight; i < _cubePairs.Count; i++)
@@ -187,5 +200,18 @@ public class TowerController : MonoBehaviour
 
     private void ClearCubes()
     {
+        _cubePairs.Clear();
+        _towerView?.ClearViews();
+    }
+
+    private void OnDestroy()
+    {
+        if (_towerView)
+        {
+            _towerView.onDragElement -= OnDragCube;
+            _towerView.onPutElement -= TryAddCube;
+        }
+
+        ClearCubes();
     }
 }

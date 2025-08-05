@@ -32,6 +32,14 @@ public class TowerView : UIView, IInteractableElement
         cubeView.onBeginDrag += OnDragCube;
         return cubeView;
     }
+    
+    public void ClearViews()
+    {
+        for (int i = 0; i < _views.Count; i++)
+        {
+            RemoveCubeView(_views[i]);
+        }
+    }
 
     public void RemoveCubeView(TowerCubeView view)
     {
@@ -46,13 +54,7 @@ public class TowerView : UIView, IInteractableElement
         _config = GameServices.I.Config;
     }
 
-    private void ClearViews()
-    {
-        for (int i = 0; i < _views.Count; i++)
-        {
-            RemoveCubeView(_views[i]);
-        }
-    }
+    
 
     private void OnDragCube(PointerEventData eventData, UIDragable view)
     {

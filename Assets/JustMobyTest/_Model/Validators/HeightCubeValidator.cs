@@ -14,7 +14,7 @@ public class HeightCubeValidator : ICubeValidator
   
   public bool Validate(CubeData verifiableCube, CubeData previousCube, out FailureReason failureReason)
   {
-    if (Mathf.Abs(verifiableCube.Position.y - previousCube.Position.y * _cubeHeight) >= _cubeHeight)
+    if (Mathf.Abs(verifiableCube.Position.y - previousCube.Position.y) >= _cubeHeight)
     {
       failureReason = FailureReason.None;
       return true;

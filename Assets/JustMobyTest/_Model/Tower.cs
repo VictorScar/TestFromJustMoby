@@ -9,11 +9,9 @@ public class Tower
     [SerializeField] private List<TowerCube> cubesInTower = new List<TowerCube>();
     private Vector2 _cubeSize;
 
-    private delegate bool ValidationDelegate(CubeData data, out string reason);
-
     private ICubeValidator[] _validators;
     public event Action<TowerCube> onCubeAdded;
-    public event Action<int> onCubeRemoved;
+    public event Action<TowerCube> onCubeRemoved;
 
     public Tower(Vector2 cubeSize, ICubeValidator[] validators)
     {
@@ -47,13 +45,20 @@ public class Tower
         return cube;
     }
 
-    private bool ValidateAddition(CubeData cubeData, out FailureReason failureReason)
+    public bool ValidateAddition(CubeData cubeData, out FailureReason failureReason)
     {
         if (cubesInTower.Count > 0)
         {
             foreach (var validator in _validators)
             {
-                if (!validator.Validate(cubeData, cubesInTower[^1].CubeData, out failureReason))
+                var previousCubeIndex = (int)cubeData.Position.y - 1;
+
+                if (previousCubeIndex > cubesInTower.Count - 1)
+                {
+                    previousCubeIndex = cubesInTower.Count - 1;
+                }
+                
+                if (!validator.Validate(cubeData, cubesInTower[previousCubeIndex].CubeData, out failureReason))
                 {
                     return false;
                 }
@@ -70,11 +75,11 @@ public class Tower
 
         for (int i = cubeHeight; i < cubesInTower.Count; i++)
         {
-            cubesInTower[i].Height -= 1;
+            cubesInTower[i].Height --;
         }
 
         cubesInTower.Remove(cube);
-
-        onCubeRemoved?.Invoke(cubeHeight);
+        onCubeRemoved?.Invoke(cube);
+        
     }
 }
