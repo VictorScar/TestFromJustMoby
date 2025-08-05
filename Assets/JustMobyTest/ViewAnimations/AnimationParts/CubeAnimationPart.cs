@@ -22,10 +22,10 @@ public abstract class CubeAnimationPart : MonoBehaviour
         switch (executionType)
         {
             case AnimationPartTypeExecution.Append:
-                return sequence.Append(RunAnimationInternal(transform, targetValue)).SetEase(ease);
+                return sequence.Append(RunAnimationInternal(transform, targetValue).SetEase(ease));
                 break;
             case AnimationPartTypeExecution.Join:
-                return sequence.Join(RunAnimationInternal(transform, targetValue)).SetEase(ease);
+                return sequence.Join(RunAnimationInternal(transform, targetValue).SetEase(ease));
                 break;
         }
 

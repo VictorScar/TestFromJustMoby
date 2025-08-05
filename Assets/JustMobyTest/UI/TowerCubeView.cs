@@ -35,7 +35,7 @@ public class TowerCubeView : UIDragable
     public void Fall(string failtureReason)
     {
         Debug.Log("Fall! Reason is " + failtureReason);
-        animator.PlayAnimation(rect, CubeAnimationID.Destroy, new Vector2(rect.anchoredPosition.x + Random.Range(-20f,20f),0f)).OnKill(DestroyCube);
+        animator.PlayAnimation(rect, CubeAnimationID.Destroy, new Vector2(rect.anchoredPosition.x + Random.Range(-20f,20f),50f)).OnKill(DestroyCube);
         //DestroyCube();
     }
 

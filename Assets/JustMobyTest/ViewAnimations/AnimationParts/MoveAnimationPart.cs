@@ -12,8 +12,8 @@ public class MoveAnimationPart : CubeAnimationPart
  
     protected override Tween RunAnimationInternal(RectTransform transform, Vector3 targetVector)
     {
-        if (speed == 0f) speed = 1f;
-        var duration = Vector2.Distance(transform.anchoredPosition, targetVector) / speed;
+        if (speed < 1f) speed = 1f;
+        var duration = Vector3.Distance(transform.anchoredPosition, targetVector) / speed;
         return transform.DOAnchorPos(targetVector, duration).OnKill(OnAnimationComplete);
     }
 
