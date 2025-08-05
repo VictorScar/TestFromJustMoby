@@ -1,20 +1,21 @@
 using DG.Tweening;
+using ScarFramework.UI;
 using UnityEngine;
 
 public class ScaleAnimationPart : CubeAnimationPart
 {
     [SerializeField] private float duration;
     [SerializeField] private Vector2 endScale;
-    protected override Tween RunAnimationInternal(RectTransform transform, Vector3 targetVector)
+    protected override Tween RunAnimationInternal(UIView view, Vector3 targetVector)
     {
-        return transform.DOScale(endScale, duration).OnKill(OnAnimationComplete);;
+        return view.Rect.DOScale(endScale, duration).OnKill(OnAnimationComplete);;
     }
 
     protected override void OnAnimationComplete()
     {
-        if (_cashedTransform != null)
+        if (_cashedView != null)
         {
-            _cashedTransform.localScale = endScale;
+            _cashedView.Rect.localScale = endScale;
         }
         base.OnAnimationComplete();
     }

@@ -1,17 +1,18 @@
 using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
+using ScarFramework.UI;
 using UnityEngine;
 
 public class TowerCubeAnimator : MonoBehaviour
 {
    [SerializeField] private CubeAnimation[] animations;
 
-   public Tween PlayAnimation(RectTransform transform, CubeAnimationID animationID, Vector3 newPos)
+   public Tween PlayAnimation(UIView view, CubeAnimationID animationID, Vector3 newPos)
    {
       if (TryGetAnimationByID(animationID, out var animation))
       {
-         return animation.Play(transform, newPos);
+         return animation.Play(view, newPos);
       }
 
       return null;

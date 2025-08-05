@@ -28,14 +28,14 @@ public class TowerCubeView : UIDragable
         }
         else
         {
-            animator.PlayAnimation(Rect, CubeAnimationID.Move, newPos);
+            animator.PlayAnimation(this, CubeAnimationID.Move, newPos);
         }
     }
 
     public void Fall(string failtureReason)
     {
         Debug.Log("Fall! Reason is " + failtureReason);
-        animator.PlayAnimation(rect, CubeAnimationID.Destroy, new Vector2(rect.anchoredPosition.x + Random.Range(-20f,20f),50f)).OnKill(DestroyCube);
+        animator.PlayAnimation(this, CubeAnimationID.Destroy, new Vector2(rect.anchoredPosition.x + Random.Range(-20f,20f),50f)).OnKill(DestroyCube);
         //DestroyCube();
     }
 
@@ -52,6 +52,6 @@ public class TowerCubeView : UIDragable
 
     public void Upload(Vector2 targetPos)
     {
-        animator.PlayAnimation(rect, CubeAnimationID.Upload, targetPos).OnKill(DestroyCube);
+        animator.PlayAnimation(this, CubeAnimationID.Upload, targetPos).OnKill(DestroyCube);
     }
 }

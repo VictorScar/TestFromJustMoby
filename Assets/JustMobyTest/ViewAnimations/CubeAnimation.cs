@@ -1,5 +1,6 @@
 using DG.Tweening;
 using ScarFramework.Button;
+using ScarFramework.UI;
 using UnityEngine;
 
 public abstract class CubeAnimation : MonoBehaviour
@@ -10,13 +11,13 @@ public abstract class CubeAnimation : MonoBehaviour
     protected Sequence _animation;
     public CubeAnimationID AnimationID => animationID;
 
-    public Tween Play(RectTransform animatedObject, Vector3 targetPoint)
+    public Tween Play(UIView view, Vector3 targetPoint)
     {
         _animation = DOTween.Sequence();
-        return _animation.Append(PlayInternal(animatedObject, targetPoint));
+        return _animation.Append(PlayInternal(view, targetPoint));
     }
 
-    protected abstract Tween PlayInternal(RectTransform animatedObject,
+    protected abstract Tween PlayInternal(UIView view,
         Vector3 targetPoint);
 
 

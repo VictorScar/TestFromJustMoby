@@ -1,4 +1,5 @@
 using DG.Tweening;
+using ScarFramework.UI;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -6,13 +7,13 @@ public class UniversalAnimation : CubeAnimation
 {
     [SerializeField] private CubeAnimationPart[] animationParts;
     
-    protected override Tween PlayInternal(RectTransform animatedObject, Vector3 targetPoint)
+    protected override Tween PlayInternal(UIView view, Vector3 targetPoint)
     {
         var sequence = DOTween.Sequence();
 
         foreach (var part in animationParts)
         {
-            part.RunAnimation(sequence, animatedObject, targetPoint);
+            part.RunAnimation(sequence, view, targetPoint);
         }
 
         return sequence.OnKill(OnAnimationEnded);
