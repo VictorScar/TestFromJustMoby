@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,6 +8,8 @@ public class HoleAreaController : MonoBehaviour
     private HoleViewArea _holeArea;
     private HoleView _hole;
     private TowerCubesConfig _cubesConfig;
+    public event Action<bool> onUploadCube;
+    public event Action onWrongDragSource;
 
     public void Init(TowerCubesConfig cubesConfig, HoleViewArea holeViewArea)
     {
@@ -18,26 +21,42 @@ public class HoleAreaController : MonoBehaviour
         _hole.onPutElement += UploadCube;
     }
 
-    private void CreateFallingCube(CubeConfigData configData, Vector3 elementPos)
+    private void CreateFallingCube(CubeConfigData configData, Vector3 elementPos, DragSourceType dragSourceType)
     {
-        if (_cubesConfig.TryGetData(configData.CubeType, out var cubeData))
+        if (dragSourceType == DragSourceType.FromTower)
         {
-            var view = _holeArea.AddCubeView(cubeData.Image);
-            var relativePosition = _holeArea.Rect.InverseTransformPoint(elementPos);
-            view.SetPosition(relativePosition);
-            view.Fall();
+            if (_cubesConfig.TryGetData(configData.CubeType, out var cubeData))
+            {
+                var view = _holeArea.AddCubeView(cubeData.Image);
+                var relativePosition = _holeArea.Rect.InverseTransformPoint(elementPos);
+                view.SetPosition(relativePosition);
+                view.Fall();
+                onUploadCube?.Invoke(false);
+            }
+        }
+        else
+        {
+            onWrongDragSource?.Invoke();
         }
     }
 
-    private void UploadCube(CubeConfigData configData, Vector3 elementPos)
+    private void UploadCube(CubeConfigData configData, Vector3 elementPos,DragSourceType dragSourceType)
     {
-        if (_cubesConfig.TryGetData(configData.CubeType, out var cubeData))
+        if (dragSourceType == DragSourceType.FromTower)
         {
-            var view = _holeArea.AddCubeView(cubeData.Image);
-            var relativePosition = _holeArea.Rect.InverseTransformPoint(elementPos);
-            view.SetPosition(relativePosition);
-            view.Rect.SetParent(_holeArea.Mask);
-            view.Upload(_hole.UploadPoint);
+            if (_cubesConfig.TryGetData(configData.CubeType, out var cubeData))
+            {
+                var view = _holeArea.AddCubeView(cubeData.Image);
+                var relativePosition = _holeArea.Rect.InverseTransformPoint(elementPos);
+                view.SetPosition(relativePosition);
+                view.Rect.SetParent(_holeArea.Mask);
+                view.Upload(_hole.UploadPoint);
+                onUploadCube?.Invoke(true);
+            }
+        }
+        else
+        {
+            onWrongDragSource?.Invoke();
         }
     }
 }

@@ -16,7 +16,7 @@ public class TowerView : UIView, IInteractableElement
     private List<TowerCubeView> _views = new List<TowerCubeView>();
 
     public event Action<TowerCubeView> onDragElement;
-    public event Action<CubeConfigData, Vector3> onPutElement;
+    public event Action<CubeConfigData, Vector3, DragSourceType> onPutElement;
 
     public Vector2 CubeSize
     {
@@ -32,7 +32,7 @@ public class TowerView : UIView, IInteractableElement
         cubeView.onBeginDrag += OnDragCube;
         return cubeView;
     }
-    
+
     public void ClearViews()
     {
         for (int i = 0; i < _views.Count; i++)
@@ -54,7 +54,6 @@ public class TowerView : UIView, IInteractableElement
         _config = GameServices.I.Config;
     }
 
-    
 
     private void OnDragCube(PointerEventData eventData, UIDragable view)
     {
@@ -63,8 +62,7 @@ public class TowerView : UIView, IInteractableElement
 
     public bool TryPutElement(CubeConfigData elementConfigData, Vector3 elementPosition, DragSourceType dragSourceType)
     {
-        onPutElement?.Invoke(elementConfigData, elementPosition);
-      //  Debug.Log("Put Cube!");
+        onPutElement?.Invoke(elementConfigData, elementPosition, dragSourceType);
         return true;
     }
 }

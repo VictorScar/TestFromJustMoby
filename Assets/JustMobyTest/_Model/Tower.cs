@@ -45,7 +45,7 @@ public class Tower
         return cube;
     }
 
-    public bool ValidateAddition(CubeData cubeData, out FailureReason failureReason)
+    public bool ValidateAddition(CubeData cubeData, out FailureReason failureReason, bool isNewCube = true)
     {
         if (cubesInTower.Count > 0)
         {
@@ -53,11 +53,11 @@ public class Tower
             {
                 var previousCubeIndex = (int)cubeData.Position.y - 1;
 
-                if (previousCubeIndex > cubesInTower.Count - 1)
+                if (isNewCube || previousCubeIndex > cubesInTower.Count - 1)
                 {
                     previousCubeIndex = cubesInTower.Count - 1;
                 }
-                
+
                 if (!validator.Validate(cubeData, cubesInTower[previousCubeIndex].CubeData, out failureReason))
                 {
                     return false;
@@ -75,11 +75,10 @@ public class Tower
 
         for (int i = cubeHeight; i < cubesInTower.Count; i++)
         {
-            cubesInTower[i].Height --;
+            cubesInTower[i].Height--;
         }
 
         cubesInTower.Remove(cube);
         onCubeRemoved?.Invoke(cube);
-        
     }
 }

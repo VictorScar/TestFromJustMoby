@@ -14,7 +14,7 @@ public class HoleViewArea : UIView, IInteractableElement
     private Vector2 _cubeSize;
     private List<TowerCubeView> _views = new List<TowerCubeView>();
 
-    public event Action<CubeConfigData, Vector3> onPutElement;
+    public event Action<CubeConfigData, Vector3, DragSourceType> onPutElement;
 
     public HoleView Hole => hole;
 
@@ -55,13 +55,8 @@ public class HoleViewArea : UIView, IInteractableElement
 
     public bool TryPutElement(CubeConfigData elementConfigData, Vector3 elementPosition, DragSourceType dragSourceType)
     {
-        if (dragSourceType == DragSourceType.FromTower)
-        {
-            Debug.Log("Try put in Hole");
-            onPutElement?.Invoke(elementConfigData, elementPosition);
-            return false;
-        }
-
+        Debug.Log("Try put in Hole");
+        onPutElement?.Invoke(elementConfigData, elementPosition, dragSourceType);
         return false;
     }
 }

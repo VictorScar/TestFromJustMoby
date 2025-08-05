@@ -11,37 +11,37 @@ namespace ScarFramework.UI
         [SerializeField] private UIAnimator onClickUpAnimator;
         public event Action<UIClickableView, PointerEventData> onClick;
         
-        public void PointerClick(PointerEventData eventData)
+        public virtual void PointerClick(PointerEventData eventData)
         {
             onClick?.Invoke(this, eventData);
             OnPointerClick(eventData);
         }
 
-        public void PointerUp(PointerEventData eventData)
+        public virtual void PointerUp(PointerEventData eventData)
         {
             onClickUpAnimator?.PlayAnimation(this);
             Debug.Log("PointerUp");
         }
 
-        public void PointerDown(PointerEventData eventData)
+        public virtual void PointerDown(PointerEventData eventData)
         {
             onClickDownAnimator?.PlayAnimation(this);
             Debug.Log("PointerDown");
         }
 
-        protected virtual void OnPointerClick(PointerEventData eventData)
+        public void OnPointerClick(PointerEventData eventData)
         {
-            
+            PointerClick(eventData);
         }
         
-        protected virtual void OnPointerUp(PointerEventData eventData)
+        public  void OnPointerUp(PointerEventData eventData)
         {
-            
+            PointerUp(eventData);
         }
         
-        protected virtual void OnPointerDown(PointerEventData eventData)
+        public void OnPointerDown(PointerEventData eventData)
         {
-            
+            PointerDown(eventData);
         }
     }
 }

@@ -4,25 +4,25 @@ using UnityEngine;
 
 public class HeightCubeValidator : ICubeValidator
 {
-  private float _cubeHeight;
-  private FailureReason _failureReason = FailureReason.PosYLow;
+    private float _cubeHeight;
+    private FailureReason _failureReason = FailureReason.PosYLow;
 
-  public HeightCubeValidator(float cubeHeight)
-  {
-    _cubeHeight = cubeHeight;
-  }
-  
-  public bool Validate(CubeData verifiableCube, CubeData previousCube, out FailureReason failureReason)
-  {
-    if (Mathf.Abs(verifiableCube.Position.y - previousCube.Position.y) >= _cubeHeight)
+    public HeightCubeValidator(float cubeHeight)
     {
-      failureReason = FailureReason.None;
-      return true;
+        _cubeHeight = cubeHeight;
     }
-    else
+
+    public bool Validate(CubeData verifiableCube, CubeData previousCube, out FailureReason failureReason)
     {
-      failureReason = _failureReason;
-      return false;
+        if (verifiableCube.Position.y - previousCube.Position.y >= _cubeHeight)
+        {
+            failureReason = FailureReason.None;
+            return true;
+        }
+        else
+        {
+            failureReason = _failureReason;
+            return false;
+        }
     }
-  }
 }
