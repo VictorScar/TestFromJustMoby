@@ -203,15 +203,18 @@ MonoBehaviour:
   towerController: {fileID: 726844526}
   holeAreaController: {fileID: 1236333269}
   notificationController: {fileID: 714365745}
+  saveDataController: {fileID: 1132231913}
   towerData:
     CubesInfo:
     - CubeType: 2
-      Position: {x: 0, y: 0}
+      XPosition: 0
+      Height: 0
     - CubeType: 5
-      Position: {x: 5, y: 1}
+      XPosition: 0
+      Height: 0
     - CubeType: 16
-      Position: {x: -5, y: 2}
-    CubeSize: {x: 0, y: 0}
+      XPosition: 0
+      Height: 0
 --- !u!4 &648102971
 Transform:
   m_ObjectHideFlags: 0
@@ -532,6 +535,51 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 1848818572957622755, guid: 85072c194a7bf5646b06638a907a96db, type: 3}
   m_PrefabInstance: {fileID: 3021344239890701994}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1132231911
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1132231912}
+  - component: {fileID: 1132231913}
+  m_Layer: 0
+  m_Name: save data controller
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1132231912
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1132231911}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1398223573}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1132231913
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1132231911}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b3087fe29a41a884cafc43dcd06798e0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  saveDataKey: cubesData
 --- !u!1 &1236333267
 GameObject:
   m_ObjectHideFlags: 0
@@ -655,6 +703,7 @@ Transform:
   - {fileID: 726844525}
   - {fileID: 1236333268}
   - {fileID: 714365746}
+  - {fileID: 1132231912}
   m_Father: {fileID: 648102971}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &3021344239890701994

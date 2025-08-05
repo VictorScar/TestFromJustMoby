@@ -14,6 +14,7 @@ public class Game : MonoBehaviour
     [SerializeField] private TowerController towerController;
     [SerializeField] private HoleAreaController holeAreaController;
     [SerializeField] private NotificationController notificationController;
+    [SerializeField] private SaveDataController saveDataController;
     [SerializeField] private TowerData towerData;
 
     public void StartGame(TowerCubesConfig cubesConfig)
@@ -27,7 +28,7 @@ public class Game : MonoBehaviour
         scrollbarConroller.Init(dragController, _cubeesConfig);
         holeAreaController.Init(cubesConfig, gameScreen.HoleArea);
 
-        towerController.Init(cubesConfig, towerView, towerData, dragController);
+        towerController.Init(cubesConfig, towerView, saveDataController, dragController);
         notificationController.Init(towerController, holeAreaController, gameScreen.NotificationPanel, gameTextConfig);
     }
 }

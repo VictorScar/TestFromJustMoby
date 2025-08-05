@@ -7,5 +7,6 @@ using UnityEngine;
 public struct CubeDataInfo
 {
     public TowerCubeType CubeType;
-    public Vector2 Position;
+    public float XPosition;
+    public int Height;
 }

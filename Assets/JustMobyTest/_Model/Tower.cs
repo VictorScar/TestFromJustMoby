@@ -7,15 +7,12 @@ using UnityEngine;
 public class Tower
 {
     [SerializeField] private List<TowerCube> cubesInTower = new List<TowerCube>();
-    private Vector2 _cubeSize;
-
+   
     private ICubeValidator[] _validators;
-    public event Action<TowerCube> onCubeAdded;
-    public event Action<TowerCube> onCubeRemoved;
+    public event Action<TowerCube[]> onDataUpdated;
 
-    public Tower(Vector2 cubeSize, ICubeValidator[] validators)
+    public Tower(ICubeValidator[] validators)
     {
-        _cubeSize = cubeSize;
         _validators = validators;
     }
 
@@ -40,7 +37,7 @@ public class Tower
             Height = cubesInTower.Count
         };
         cubesInTower.Add(cube);
-        onCubeAdded?.Invoke(cube);
+        onDataUpdated?.Invoke(cubesInTower.ToArray());
 
         return cube;
     }
@@ -79,6 +76,6 @@ public class Tower
         }
 
         cubesInTower.Remove(cube);
-        onCubeRemoved?.Invoke(cube);
+        onDataUpdated?.Invoke(cubesInTower.ToArray());
     }
 }

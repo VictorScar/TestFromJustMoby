@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 public class TowerController : MonoBehaviour
@@ -12,16 +13,32 @@ public class TowerController : MonoBehaviour
     private DragController _dragController;
     private List<TowerCubePair> _cubePairs = new List<TowerCubePair>();
     private TowerCubesConfig _cubesConfig;
+    private SaveDataController _saveDataController;
     public event Action onCubeAdded;
     public event Action onCubeRemoved;
     public event Action<FailureReason> onCubeFall;
 
-    public void Init(TowerCubesConfig cubesConfig, TowerView view, TowerData towerData, DragController dragController)
+    private void OnDestroy()
+    {
+        if (_towerView)
+        {
+            _towerView.onDragElement -= OnDragCube;
+            _towerView.onPutElement -= TryAddCube;
+            _tower.onDataUpdated -= OnTowerDataUpdated;
+        }
+
+        ClearCubes();
+    }
+    
+    public async UniTask Init(TowerCubesConfig cubesConfig, TowerView view, SaveDataController saveDataController, DragController dragController)
     {
         _cubesConfig = cubesConfig;
         _towerView = view;
         _dragController = dragController;
+        _saveDataController = saveDataController;
 
+        var towerData = await _saveDataController.LoadData();
+        
         _validators = new ICubeValidator[]
         {
             new TowerHeightValidator(_cubesConfig.CubeSize.y, _towerView.Rect.rect.size.y),
@@ -29,12 +46,20 @@ public class TowerController : MonoBehaviour
             new HeightCubeValidator(minVerticalOffset)
         };
 
-        _tower = new Tower(_cubesConfig.CubeSize, _validators);
+        _tower = new Tower(_validators);
 
         _towerView.onPutElement += TryAddCube;
         _towerView.onDragElement += OnDragCube;
+        _tower.onDataUpdated += OnTowerDataUpdated;
 
         SetStartCubeData(towerData);
+    }
+    
+
+
+    private void OnTowerDataUpdated(TowerCube[] towerCubes)
+    {
+        _saveDataController.Data = towerCubes;
     }
 
     private void SetStartCubeData(TowerData towerData)
@@ -49,7 +74,7 @@ public class TowerController : MonoBehaviour
                 var data = new CubeData
                 {
                     CubeType = info.CubeType,
-                    Position = new Vector2(info.Position.x, i)
+                    Position = new Vector2(info.XPosition, i)
                 };
 
                 if (_cubesConfig.TryGetData(data.CubeType, out var cubeConfigData))
@@ -211,14 +236,5 @@ public class TowerController : MonoBehaviour
         _towerView?.ClearViews();
     }
 
-    private void OnDestroy()
-    {
-        if (_towerView)
-        {
-            _towerView.onDragElement -= OnDragCube;
-            _towerView.onPutElement -= TryAddCube;
-        }
 
-        ClearCubes();
-    }
 }
