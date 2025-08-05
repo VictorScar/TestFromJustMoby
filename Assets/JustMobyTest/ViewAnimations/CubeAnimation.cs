@@ -8,7 +8,7 @@ public abstract class CubeAnimation : MonoBehaviour
     [SerializeField] private CubeAnimationID animationID;
     [SerializeField] protected Ease ease;
     
-    protected Sequence _animation;
+    private Sequence _animation;
     public CubeAnimationID AnimationID => animationID;
 
     public Tween Play(UIView view, Vector3 targetPoint)

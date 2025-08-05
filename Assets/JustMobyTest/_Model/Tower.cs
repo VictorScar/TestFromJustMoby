@@ -11,48 +11,19 @@ public class Tower
 
     private delegate bool ValidationDelegate(CubeData data, out string reason);
 
-    private List<ValidationDelegate> _validators = new List<ValidationDelegate>();
+    private ICubeValidator[] _validators;
     public event Action<TowerCube> onCubeAdded;
     public event Action<int> onCubeRemoved;
 
-    public Tower(Vector2 cubeSize)
+    public Tower(Vector2 cubeSize, ICubeValidator[] validators)
     {
         _cubeSize = cubeSize;
-
-        _validators.Add((CubeData d, out string reason) =>
-        {
-            if (Mathf.Abs(cubesInTower[cubesInTower.Count - 1].XPos - d.Position.x) <= 0.5f * _cubeSize.x)
-            {
-                reason = "";
-                return true;
-            }
-            else
-            {
-                reason = "position X is out of range";
-                return false;
-            }
-            //return Mathf.Abs(cubesInTower[cubesInTower.Count - 1].XPos - d.Position.x) <= 0.5f * _cubeSize.x;
-        });
-        _validators.Add((CubeData d, out string reason) =>
-        {
-            if (d.Position.y >= (cubesInTower.Count) * cubeSize.y - 0.1f * cubeSize.y)
-            {
-                reason = "";
-                return true;
-            }
-            else
-            {
-                reason = "Pos Y is too low";
-                return false;
-            }
-            // return d.Position.y >= (cubesInTower.Count) * cubeSize.y - 0.1f * cubeSize.y;
-        });
-        //_validators.Add((d) => cubesInTower[cubesInTower.Count - 1].CubeType == d.CubeType);
+        _validators = validators;
     }
 
-    public bool TryAddCube(CubeData cubeData, out TowerCube cube, out string failtureReason)
+    public bool TryAddCube(CubeData cubeData, out TowerCube cube, out FailureReason failureReason)
     {
-        if (ValidateAddition(cubeData, out failtureReason))
+        if (ValidateAddition(cubeData, out failureReason))
         {
             cube = AddCube(cubeData.CubeType, cubeData.Position.x);
             return true;
@@ -76,21 +47,20 @@ public class Tower
         return cube;
     }
 
-    private bool ValidateAddition(CubeData cubeData, out string failtureReason)
+    private bool ValidateAddition(CubeData cubeData, out FailureReason failureReason)
     {
         if (cubesInTower.Count > 0)
         {
             foreach (var validator in _validators)
             {
-                if (!validator(cubeData, out failtureReason))
+                if (!validator.Validate(cubeData, cubesInTower[^1].CubeData, out failureReason))
                 {
                     return false;
                 }
             }
-            
         }
 
-        failtureReason = "";
+        failureReason = FailureReason.None;
         return true;
     }
 

@@ -53,7 +53,6 @@ public class HoleViewArea : UIView, IInteractableElement
         }
     }
 
-
     public bool TryPutElement(CubeConfigData elementConfigData, Vector3 elementPosition, DragSourceType dragSourceType)
     {
         if (dragSourceType == DragSourceType.FromTower)

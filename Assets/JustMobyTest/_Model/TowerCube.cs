@@ -7,7 +7,6 @@ using UnityEngine;
 public class TowerCube
 {
     public TowerCubeType CubeType;
-    //public Vector2 Position;
     public float XPos;
     public int Height;
 
@@ -19,14 +18,19 @@ public class TowerCube
 
     public bool IsInvalid => CubeType == TowerCubeType.None;
 
+    public CubeData CubeData => new CubeData
+    {
+        CubeType = CubeType,
+        Position = new Vector2(XPos, Height)
+    };
+
     public static bool operator ==(TowerCube a, TowerCube b)
     {
         return a.CubeType == b.CubeType;
     }
-  
+
     public static bool operator !=(TowerCube a, TowerCube b)
     {
         return !(a == b);
     }
-
 }

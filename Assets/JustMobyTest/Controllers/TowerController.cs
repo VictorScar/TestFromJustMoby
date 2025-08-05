@@ -5,6 +5,9 @@ using UnityEngine;
 public class TowerController : MonoBehaviour
 {
     [SerializeField] private Tower _tower;
+
+    private ICubeValidator[] _validators;
+  
     private TowerView _towerView;
     private DragController _dragController;
     private List<TowerCubePair> _cubePairs = new List<TowerCubePair>();
@@ -15,7 +18,15 @@ public class TowerController : MonoBehaviour
         _cubesConfig = cubesConfig;
         _towerView = view;
         _dragController = dragController;
-        _tower = new Tower(_cubesConfig.CubeSize);
+
+        _validators = new ICubeValidator[]
+        {
+            new XPositionValidator(_cubesConfig.CubeSize.x),
+            new HeightCubeValidator(_cubesConfig.CubeSize.y),
+            new TowerHeightValidator(_cubesConfig.CubeSize.y, _towerView.Rect.rect.size.y)
+        };
+        
+        _tower = new Tower(_cubesConfig.CubeSize, _validators);
         _towerView.onPutElement += TryAddCube;
         _towerView.onDragElement += OnDragCube;
 
@@ -41,7 +52,7 @@ public class TowerController : MonoBehaviour
                 {
                     var view = _towerView.AddCubeView(cubeConfigData.Image);
                     view.Size = _cubesConfig.CubeSize;
-                   
+
 
                     if (_tower.TryAddCube(data, out var newCube, out var failtureReason))
                     {
@@ -71,11 +82,11 @@ public class TowerController : MonoBehaviour
             {
                 AddCubePair(cube, view);
                 view.SetPosition(new Vector2(cube.XPos, cube.Height * _cubesConfig.CubeSize.y), false);
-                //view.SetPosition(pos, false);
             }
             else
             {
-                view.Fall(reason);
+                view.Fall();
+                Debug.Log("Failure! Reason is" + reason.ToString());
             }
         }
     }
@@ -87,16 +98,30 @@ public class TowerController : MonoBehaviour
         _towerView.RemoveCubeView(cubePair.View);
         _cubePairs.Remove(cubePair);
 
-        UpdateViewsPositions(removeCubeHeight);
+        UpdateCubesStates(removeCubeHeight);
     }
 
+    private void UpdateCubesStates(int removeCubeHeight)
+    {
+        for (int i = removeCubeHeight; i < _cubePairs.Count; i++)
+        {
+            if (i > 0)
+            {
+                //_cubePairs[i].Model.XPos
+            }
+           
+        }
+
+        UpdateViewsPositions(removeCubeHeight);
+    }
+    
     private void UpdateViewsPositions(int removeCubeHeight)
     {
         for (int i = removeCubeHeight; i < _cubePairs.Count; i++)
         {
             var view = _cubePairs[i].View;
             view.SetPosition(new Vector2(view.Rect.anchoredPosition.x,
-                view.Rect.anchoredPosition.y - _cubesConfig.CubeSize.y), false);
+                _cubePairs[i].Model.Height * _cubesConfig.CubeSize.y), false);
         }
     }
 

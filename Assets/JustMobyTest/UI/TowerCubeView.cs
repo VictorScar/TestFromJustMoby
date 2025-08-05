@@ -32,11 +32,10 @@ public class TowerCubeView : UIDragable
         }
     }
 
-    public void Fall(string failtureReason)
+    public void Fall()
     {
-        Debug.Log("Fall! Reason is " + failtureReason);
-        animator.PlayAnimation(this, CubeAnimationID.Destroy, new Vector2(rect.anchoredPosition.x + Random.Range(-20f,20f),50f)).OnKill(DestroyCube);
-        //DestroyCube();
+        animator.PlayAnimation(this, CubeAnimationID.Destroy,
+            new Vector2(rect.anchoredPosition.x + Random.Range(-20f, 20f), 50f)).OnKill(DestroyCube);
     }
 
     private void DestroyCube()

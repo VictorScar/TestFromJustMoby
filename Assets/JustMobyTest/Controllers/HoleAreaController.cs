@@ -25,7 +25,7 @@ public class HoleAreaController : MonoBehaviour
             var view = _holeArea.AddCubeView(cubeData.Image);
             var relativePosition = _holeArea.Rect.InverseTransformPoint(elementPos);
             view.SetPosition(relativePosition);
-            view.Fall("Is not hole!");
+            view.Fall();
         }
     }
 
