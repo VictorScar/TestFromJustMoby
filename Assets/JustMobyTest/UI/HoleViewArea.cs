@@ -1,27 +1,29 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using ScarFramework.Button;
 using ScarFramework.UI;
 using UnityEngine;
-using UnityEngine.EventSystems;
-using UnityEngine.Serialization;
 
-public class TowerView : UIView, IInteractableElement
+public class HoleViewArea : UIView, IInteractableElement
 {
-    [SerializeField] private RectTransform root;
     [SerializeField] private TowerCubeView cubeViewPrefab;
-    private TowerCubesConfig _config;
+    [SerializeField] private RectTransform holeMask;
+    [SerializeField] private HoleView hole;
+    [SerializeField] private RectTransform root;
+
     private Vector2 _cubeSize;
     private List<TowerCubeView> _views = new List<TowerCubeView>();
 
-    public event Action<TowerCubeView> onDragElement;
     public event Action<CubeConfigData, Vector3> onPutElement;
+
+    public HoleView Hole => hole;
 
     public Vector2 CubeSize
     {
         set => _cubeSize = value;
     }
+
+    public RectTransform Mask => holeMask;
 
     public TowerCubeView AddCubeView(Sprite image)
     {
@@ -29,21 +31,18 @@ public class TowerView : UIView, IInteractableElement
 
         cubeView.Icon = image;
         cubeView.Size = _cubeSize;
-        cubeView.onBeginDrag += OnDragCube;
         return cubeView;
     }
 
     public void RemoveCubeView(TowerCubeView view)
     {
         _views.Remove(view);
-        view.onBeginDrag -= OnDragCube;
         Destroy(view.gameObject);
     }
 
     protected override void OnInit()
     {
         ClearViews();
-        _config = GameServices.I.Config;
     }
 
     private void ClearViews()
@@ -54,15 +53,11 @@ public class TowerView : UIView, IInteractableElement
         }
     }
 
-    private void OnDragCube(PointerEventData eventData, UIDragable view)
-    {
-        onDragElement?.Invoke(view as TowerCubeView);
-    }
 
     public bool TryPutElement(CubeConfigData elementConfigData, Vector3 elementPosition)
     {
+        Debug.Log("Try put in Hole");
         onPutElement?.Invoke(elementConfigData, elementPosition);
-        Debug.Log("Put Cube!");
-        return true;
+        return false;
     }
 }

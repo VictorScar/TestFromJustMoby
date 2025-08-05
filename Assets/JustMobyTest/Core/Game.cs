@@ -8,9 +8,10 @@ public class Game : MonoBehaviour
 {
     private TowerCubesConfig _cubesesConfig;
 
-    [SerializeField] private ScrollbarConroller _scrollbarConroller;
+    [SerializeField] private ScrollbarConroller scrollbarConroller;
     [SerializeField] private DragController dragController;
-    [SerializeField] private TowerController _towerController;
+    [SerializeField] private TowerController towerController;
+    [SerializeField] private HoleAreaController holeAreaController;
     [SerializeField] private TowerData towerData;
 
     public void StartGame(TowerCubesConfig cubesConfig)
@@ -21,8 +22,9 @@ public class Game : MonoBehaviour
         gameScreen.Show();
         var towerView = gameScreen.TowerView;
         towerView.CubeSize = cubesConfig.CubeSize;
-        _scrollbarConroller.Init(dragController, _cubesesConfig);
+        scrollbarConroller.Init(dragController, _cubesesConfig);
+        holeAreaController.Init(cubesConfig, gameScreen.HoleArea);
 
-        _towerController.Init(cubesConfig, towerView, towerData, dragController);
+        towerController.Init(cubesConfig, towerView, towerData, dragController);
     }
 }
