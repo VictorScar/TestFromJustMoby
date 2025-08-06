@@ -1,18 +1,19 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+using JustMobyTest._Model;
 
-public class TowerCubePair
+namespace JustMobyTest.Data
 {
-   private TowerCube _model;
-   private TowerCubeView _view;
-
-   public TowerCubePair(TowerCube model, TowerCubeView view)
+   public class TowerCubePair
    {
-      _model = model;
-      _view = view;
-   }
+      private TowerCube _model;
+      private TowerCubeView _view;
 
-   public TowerCubeView View => _view;
-   public TowerCube Model => _model;
+      public TowerCubePair(TowerCube model, TowerCubeView view)
+      {
+         _model = model;
+         _view = view;
+      }
+
+      public TowerCubeView View => _view;
+      public TowerCube Model => _model;
+   }
 }

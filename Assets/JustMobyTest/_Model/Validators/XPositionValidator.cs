@@ -1,29 +1,30 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class XPositionValidator : ICubeValidator
+namespace JustMobyTest._Model.Validators
 {
-    private float _cubeWidth;
-    private float _widthLimit = 0.5f;
-    private FailureReason _failureReason = FailureReason.XOffsetToLarge;
-    
-    public XPositionValidator(float cubeWidth)
+    public class XPositionValidator : ICubeValidator
     {
-        _cubeWidth = cubeWidth;
-    }
+        private float _cubeWidth;
+        private float _widthLimit = 0.5f;
+        private FailureReason _failureReason = FailureReason.XOffsetToLarge;
     
-    public bool Validate(CubeData verifiableCube, CubeData previousCube, out FailureReason failureReason)
-    {
-        if (Mathf.Abs(verifiableCube.Position.x - previousCube.Position.x) <= _widthLimit * _cubeWidth)
+        public XPositionValidator(float cubeWidth)
         {
-            failureReason = FailureReason.None;
-            return true;
+            _cubeWidth = cubeWidth;
         }
-        else
+    
+        public bool Validate(CubeData verifiableCube, CubeData previousCube, out FailureReason failureReason)
         {
-            failureReason = _failureReason;
-            return false;
+            if (Mathf.Abs(verifiableCube.Position.x - previousCube.Position.x) <= _widthLimit * _cubeWidth)
+            {
+                failureReason = FailureReason.None;
+                return true;
+            }
+            else
+            {
+                failureReason = _failureReason;
+                return false;
+            }
         }
     }
 }

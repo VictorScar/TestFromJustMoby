@@ -1,11 +1,10 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public enum CubeAnimationID
+namespace JustMobyTest.ViewAnimations
 {
-  None,
-  Move,
-  Destroy,
-  Upload
+  public enum CubeAnimationID
+  {
+    None,
+    Move,
+    Destroy,
+    Upload
+  }
 }

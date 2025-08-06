@@ -1,6 +1,6 @@
 using System.Threading;
 using Cysharp.Threading.Tasks;
-using JustMobyTest.Configs._Data;
+using JustMobyTest.Configs;
 using UnityEngine;
 
 namespace JustMobyTest.Services

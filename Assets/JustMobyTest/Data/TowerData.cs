@@ -1,11 +1,10 @@
 using System;
-using UnityEngine;
-using UnityEngine.Serialization;
 
-
-[Serializable]
-public struct TowerData
+namespace JustMobyTest.Data
 {
-    public CubeDataInfo[] CubesInfo;
-   // public Vector2 CubeSize;
+    [Serializable]
+    public struct TowerData
+    {
+        public CubeDataInfo[] CubesInfo;
+    }
 }

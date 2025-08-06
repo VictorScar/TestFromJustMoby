@@ -1,4 +1,5 @@
 using DG.Tweening;
+using JustMobyTest.ViewAnimations;
 using ScarFramework.Button;
 using ScarFramework.UI;
 using UnityEngine;

@@ -1,6 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+using JustMobyTest._Model;
+using JustMobyTest._Model.Validators;
+
 
 public class TowerHeightValidator : ICubeValidator
 {

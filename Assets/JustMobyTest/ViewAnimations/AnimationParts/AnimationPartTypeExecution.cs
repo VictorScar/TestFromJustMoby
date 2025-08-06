@@ -1,9 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public enum AnimationPartTypeExecution
+namespace JustMobyTest.ViewAnimations.AnimationParts
 {
-    Append,
-    Join
+    public enum AnimationPartTypeExecution
+    {
+        Append,
+        Join
+    }
 }

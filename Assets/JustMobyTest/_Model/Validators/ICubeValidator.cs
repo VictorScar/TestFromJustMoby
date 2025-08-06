@@ -1,8 +1,7 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public interface ICubeValidator
+namespace JustMobyTest._Model.Validators
 {
-    bool Validate(CubeData verifiableCube, CubeData previousCube, out FailureReason failureReason);
+    public interface ICubeValidator
+    {
+        bool Validate(CubeData verifiableCube, CubeData previousCube, out FailureReason failureReason);
+    }
 }

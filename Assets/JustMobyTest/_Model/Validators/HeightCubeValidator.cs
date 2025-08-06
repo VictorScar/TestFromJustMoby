@@ -1,28 +1,27 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public class HeightCubeValidator : ICubeValidator
+namespace JustMobyTest._Model.Validators
 {
-    private float _cubeHeight;
-    private FailureReason _failureReason = FailureReason.PosYLow;
-
-    public HeightCubeValidator(float cubeHeight)
+    public class HeightCubeValidator : ICubeValidator
     {
-        _cubeHeight = cubeHeight;
-    }
+        private float _cubeHeight;
+        private FailureReason _failureReason = FailureReason.PosYLow;
 
-    public bool Validate(CubeData verifiableCube, CubeData previousCube, out FailureReason failureReason)
-    {
-        if (verifiableCube.Position.y - previousCube.Position.y >= _cubeHeight)
+        public HeightCubeValidator(float cubeHeight)
         {
-            failureReason = FailureReason.None;
-            return true;
+            _cubeHeight = cubeHeight;
         }
-        else
+
+        public bool Validate(CubeData verifiableCube, CubeData previousCube, out FailureReason failureReason)
         {
-            failureReason = _failureReason;
-            return false;
+            if (verifiableCube.Position.y - previousCube.Position.y >= _cubeHeight)
+            {
+                failureReason = FailureReason.None;
+                return true;
+            }
+            else
+            {
+                failureReason = _failureReason;
+                return false;
+            }
         }
     }
 }

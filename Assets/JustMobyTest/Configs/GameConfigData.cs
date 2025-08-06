@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace JustMobyTest.Configs._Data
+namespace JustMobyTest.Configs
 {
     public struct GameConfigData
     {

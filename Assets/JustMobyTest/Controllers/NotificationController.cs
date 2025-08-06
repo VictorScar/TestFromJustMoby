@@ -1,139 +1,142 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Threading;
 using Cysharp.Threading.Tasks;
+using JustMobyTest._Model.Validators;
+using JustMobyTest.Configs;
+using JustMobyTest.UI;
 using UnityEngine;
-using UnityEngine.Serialization;
 
-public class NotificationController : MonoBehaviour
+
+namespace JustMobyTest.Controllers
 {
-    [SerializeField] private float showTime = 3f;
-    [SerializeField] private FailReasonTextIDData[] idMatchingDatas;
-
-    private GameTextsConfig _textsConfig;
-    private NotificationPanel _notificationPanel;
-    private TowerController _towerController;
-    private HoleAreaController _holeAreaController;
-    private CancellationTokenSource _taskCancelation;
-
-    public void Init(TowerController towerController, HoleAreaController holeAreaController,
-        NotificationPanel notificationPanel, GameTextsConfig textsConfig)
+    public class NotificationController : MonoBehaviour
     {
-        _notificationPanel = notificationPanel;
-        _towerController = towerController;
-        _holeAreaController = holeAreaController;
-        _textsConfig = textsConfig;
+        [SerializeField] private float showTime = 3f;
+        [SerializeField] private FailReasonTextIDData[] idMatchingDatas;
 
-        _towerController.onCubeAdded += OnCubeAddedInTower;
-        _towerController.onCubeRemoved += OnCubeRemovedFromTower;
-        _towerController.onCubeFall += OnCubeFallFromTower;
-        _holeAreaController.onUploadCube += OnUploadCube;
-        _holeAreaController.onWrongDragSource += OnWrongDragToHole;
-    }
+        private GameTextsConfig _textsConfig;
+        private NotificationPanel _notificationPanel;
+        private TowerController _towerController;
+        private HoleAreaController _holeAreaController;
+        private CancellationTokenSource _taskCancelation;
 
-    private void OnDestroy()
-    {
-        Dispose();
-    }
-
-    private void Dispose()
-    {
-        _taskCancelation?.Cancel();
-
-        if (_towerController)
+        public void Init(TowerController towerController, HoleAreaController holeAreaController,
+            NotificationPanel notificationPanel, GameTextsConfig textsConfig)
         {
-            _towerController.onCubeAdded -= OnCubeAddedInTower;
-            _towerController.onCubeRemoved -= OnCubeRemovedFromTower;
-            _towerController.onCubeFall -= OnCubeFallFromTower;
+            _notificationPanel = notificationPanel;
+            _towerController = towerController;
+            _holeAreaController = holeAreaController;
+            _textsConfig = textsConfig;
+
+            _towerController.onCubeAdded += OnCubeAddedInTower;
+            _towerController.onCubeRemoved += OnCubeRemovedFromTower;
+            _towerController.onCubeFall += OnCubeFallFromTower;
+            _holeAreaController.onUploadCube += OnUploadCube;
+            _holeAreaController.onWrongDragSource += OnWrongDragToHole;
         }
 
-        if (_holeAreaController)
+        private void OnDestroy()
         {
-            _holeAreaController.onUploadCube -= OnUploadCube;
+            Dispose();
         }
-    }
 
-    private void OnCubeAddedInTower()
-    {
-        if (_textsConfig.TryGetTextByID(
-                new GameTextID { CategoryID = TextCategoryID.CubeActions, TextID = TextID.CubeAdded }, out var text))
+        private void Dispose()
         {
-            ShowNotification(text);
+            _taskCancelation?.Cancel();
+
+            if (_towerController)
+            {
+                _towerController.onCubeAdded -= OnCubeAddedInTower;
+                _towerController.onCubeRemoved -= OnCubeRemovedFromTower;
+                _towerController.onCubeFall -= OnCubeFallFromTower;
+            }
+
+            if (_holeAreaController)
+            {
+                _holeAreaController.onUploadCube -= OnUploadCube;
+            }
         }
-    }
 
-    private void OnCubeRemovedFromTower()
-    {
-        if (_textsConfig.TryGetTextByID(
-                new GameTextID { CategoryID = TextCategoryID.CubeActions, TextID = TextID.CubeRemoved }, out var text))
+        private void OnCubeAddedInTower()
         {
-            ShowNotification(text);
-        }
-    }
-
-    private void OnCubeFallFromTower(FailureReason reason)
-    {
-        if (TryGetCorrespondenceTextID(reason, out var gameMessageID))
-        {
-            if (_textsConfig.TryGetTextByID(gameMessageID, out var text))
+            if (_textsConfig.TryGetTextByID(
+                    new GameTextID { CategoryID = TextCategoryID.CubeActions, TextID = TextID.CubeAdded }, out var text))
             {
                 ShowNotification(text);
             }
         }
-    }
 
-    private void OnUploadCube(bool result)
-    {
-        var textID = new GameTextID { CategoryID = TextCategoryID.CubeActions, TextID = TextID.UploadInHol };
-
-        if (!result) textID = new GameTextID { CategoryID = TextCategoryID.CubeActions, TextID = TextID.DontHitHol };
-
-        if (_textsConfig.TryGetTextByID(textID, out var text))
+        private void OnCubeRemovedFromTower()
         {
-            ShowNotification(text);
-        }
-    }
-    
-    private void OnWrongDragToHole()
-    {
-        if (_textsConfig.TryGetTextByID(
-                new GameTextID { CategoryID = TextCategoryID.CubeActions, TextID = TextID.WrongDragToHol }, out var text))
-        {
-            ShowNotification(text);
-        }
-    }
-
-    private bool TryGetCorrespondenceTextID(FailureReason failureReason, out GameTextID textID)
-    {
-        if (idMatchingDatas != null)
-        {
-            foreach (var data in idMatchingDatas)
+            if (_textsConfig.TryGetTextByID(
+                    new GameTextID { CategoryID = TextCategoryID.CubeActions, TextID = TextID.CubeRemoved }, out var text))
             {
-                if (data.FailureReason == failureReason)
+                ShowNotification(text);
+            }
+        }
+
+        private void OnCubeFallFromTower(FailureReason reason)
+        {
+            if (TryGetCorrespondenceTextID(reason, out var gameMessageID))
+            {
+                if (_textsConfig.TryGetTextByID(gameMessageID, out var text))
                 {
-                    textID = data.TextID;
-                    return true;
+                    ShowNotification(text);
                 }
             }
         }
 
-        textID = new GameTextID();
-        return false;
-    }
+        private void OnUploadCube(bool result)
+        {
+            var textID = new GameTextID { CategoryID = TextCategoryID.CubeActions, TextID = TextID.UploadInHol };
 
-    private void ShowNotification(string message)
-    {
-        _taskCancelation?.Cancel();
-        _taskCancelation = new CancellationTokenSource();
-        ShowNotificationAsync(message, _taskCancelation.Token);
-    }
+            if (!result) textID = new GameTextID { CategoryID = TextCategoryID.CubeActions, TextID = TextID.DontHitHol };
 
-    private async UniTask ShowNotificationAsync(string gameText, CancellationToken token)
-    {
-        _notificationPanel.Message = gameText;
-        _notificationPanel.Show();
-        await UniTask.WaitForSeconds(showTime, cancellationToken: token);
-        _notificationPanel.Hide();
+            if (_textsConfig.TryGetTextByID(textID, out var text))
+            {
+                ShowNotification(text);
+            }
+        }
+    
+        private void OnWrongDragToHole()
+        {
+            if (_textsConfig.TryGetTextByID(
+                    new GameTextID { CategoryID = TextCategoryID.CubeActions, TextID = TextID.WrongDragToHol }, out var text))
+            {
+                ShowNotification(text);
+            }
+        }
+
+        private bool TryGetCorrespondenceTextID(FailureReason failureReason, out GameTextID textID)
+        {
+            if (idMatchingDatas != null)
+            {
+                foreach (var data in idMatchingDatas)
+                {
+                    if (data.FailureReason == failureReason)
+                    {
+                        textID = data.TextID;
+                        return true;
+                    }
+                }
+            }
+
+            textID = new GameTextID();
+            return false;
+        }
+
+        private void ShowNotification(string message)
+        {
+            _taskCancelation?.Cancel();
+            _taskCancelation = new CancellationTokenSource();
+            ShowNotificationAsync(message, _taskCancelation.Token);
+        }
+
+        private async UniTask ShowNotificationAsync(string gameText, CancellationToken token)
+        {
+            _notificationPanel.Message = gameText;
+            _notificationPanel.Show();
+            await UniTask.WaitForSeconds(showTime, cancellationToken: token);
+            _notificationPanel.Hide();
+        }
     }
 }

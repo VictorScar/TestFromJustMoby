@@ -1,15 +1,16 @@
-using System.Collections;
-using System.Collections.Generic;
 using ScarFramework.UI;
 using TMPro;
 using UnityEngine;
 
-public class NotificationPanel : UIView
+namespace JustMobyTest.UI
 {
-    [SerializeField] private TMP_Text textField;
-
-    public string Message
+    public class NotificationPanel : UIView
     {
-        set => textField.text = value;
+        [SerializeField] private TMP_Text textField;
+
+        public string Message
+        {
+            set => textField.text = value;
+        }
     }
 }

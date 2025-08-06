@@ -1,4 +1,6 @@
 using Cysharp.Threading.Tasks;
+using JustMobyTest._Model;
+using JustMobyTest.Data;
 
 public interface IProgressDataService
 {

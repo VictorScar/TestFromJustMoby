@@ -1,10 +1,13 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
+using JustMobyTest.Configs;
+using JustMobyTest.Data;
 using UnityEngine;
 
-public interface IInteractableElement
+namespace JustMobyTest.UI
 {
-    public event Action<CubeConfig, Vector3, DragSourceType> onPutElement;
-    bool TryPutElement(CubeConfig elementConfig, Vector3 elementPosition, DragSourceType dragSourceType);
+    public interface IInteractableElement
+    {
+        public event Action<CubeConfig, Vector3, DragSourceType> onPutElement;
+        bool TryPutElement(CubeConfig elementConfig, Vector3 elementPosition, DragSourceType dragSourceType);
+    }
 }

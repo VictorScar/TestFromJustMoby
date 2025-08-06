@@ -3,32 +3,35 @@ using ScarFramework.Button;
 using ScarFramework.UI;
 using UnityEngine;
 
-public abstract class CubeAnimation : MonoBehaviour
+namespace JustMobyTest.ViewAnimations
 {
-    [SerializeField] private CubeAnimationID animationID;
-    [SerializeField] protected Ease ease;
+    public abstract class CubeAnimation : MonoBehaviour
+    {
+        [SerializeField] private CubeAnimationID animationID;
+        [SerializeField] protected Ease ease;
     
-    private Sequence _animation;
-    public CubeAnimationID AnimationID => animationID;
+        private Sequence _animation;
+        public CubeAnimationID AnimationID => animationID;
 
-    public Tween Play(UIView view, Vector3 targetPoint)
-    {
-        _animation = DOTween.Sequence();
-        return _animation.Append(PlayInternal(view, targetPoint));
-    }
+        public Tween Play(UIView view, Vector3 targetPoint)
+        {
+            _animation = DOTween.Sequence();
+            return _animation.Append(PlayInternal(view, targetPoint));
+        }
 
-    protected abstract Tween PlayInternal(UIView view,
-        Vector3 targetPoint);
+        protected abstract Tween PlayInternal(UIView view,
+            Vector3 targetPoint);
 
 
-    protected virtual void OnAnimationEnded()
-    {
-    }
+        protected virtual void OnAnimationEnded()
+        {
+        }
 
-    [Button("Kill")]
-    public void KillAnimation()
-    {
-        Debug.Log("Kill animation");
-        _animation?.Kill();
+        [Button("Kill")]
+        public void KillAnimation()
+        {
+            Debug.Log("Kill animation");
+            _animation?.Kill();
+        }
     }
 }

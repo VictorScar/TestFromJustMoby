@@ -1,6 +1,9 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using JustMobyTest.Configs;
+using JustMobyTest.Data;
+using JustMobyTest.UI;
 using ScarFramework.UI;
 using UnityEngine;
 

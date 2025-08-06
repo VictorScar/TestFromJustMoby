@@ -2,21 +2,24 @@ using DG.Tweening;
 using ScarFramework.UI;
 using UnityEngine;
 
-public class ScaleAnimationPart : CubeAnimationPart
+namespace JustMobyTest.ViewAnimations.AnimationParts
 {
-    [SerializeField] private float duration;
-    [SerializeField] private Vector2 endScale;
-    protected override Tween RunAnimationInternal(UIView view, Vector3 targetVector)
+    public class ScaleAnimationPart : CubeAnimationPart
     {
-        return view.Rect.DOScale(endScale, duration).OnKill(OnAnimationComplete);;
-    }
-
-    protected override void OnAnimationComplete()
-    {
-        if (_cashedView != null)
+        [SerializeField] private float duration;
+        [SerializeField] private Vector2 endScale;
+        protected override Tween RunAnimationInternal(UIView view, Vector3 targetVector)
         {
-            _cashedView.Rect.localScale = endScale;
+            return view.Rect.DOScale(endScale, duration).OnKill(OnAnimationComplete);;
         }
-        base.OnAnimationComplete();
+
+        protected override void OnAnimationComplete()
+        {
+            if (_cashedView != null)
+            {
+                _cashedView.Rect.localScale = endScale;
+            }
+            base.OnAnimationComplete();
+        }
     }
 }

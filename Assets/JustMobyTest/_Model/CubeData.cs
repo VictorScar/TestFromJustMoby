@@ -1,9 +1,11 @@
-using System.Collections;
-using System.Collections.Generic;
+using JustMobyTest.Data;
 using UnityEngine;
 
-public struct CubeData
+namespace JustMobyTest._Model
 {
-   public TowerCubeType CubeType;
-   public Vector2 Position;
+   public struct CubeData
+   {
+      public TowerCubeType CubeType;
+      public Vector2 Position;
+   }
 }

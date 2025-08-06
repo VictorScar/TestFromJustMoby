@@ -1,5 +1,7 @@
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
+using JustMobyTest._Model;
+using JustMobyTest.Data;
 using Newtonsoft.Json;
 using UnityEngine;
 

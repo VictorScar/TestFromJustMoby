@@ -1,11 +1,10 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public enum FailureReason
+namespace JustMobyTest._Model.Validators
 {
-    None,
-    PosYLow,
-    XOffsetToLarge,
-    TowerHeightToLarge
+    public enum FailureReason
+    {
+        None,
+        PosYLow,
+        XOffsetToLarge,
+        TowerHeightToLarge
+    }
 }

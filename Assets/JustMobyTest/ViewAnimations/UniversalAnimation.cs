@@ -1,26 +1,29 @@
 using DG.Tweening;
+using JustMobyTest.ViewAnimations.AnimationParts;
 using ScarFramework.UI;
 using UnityEngine;
-using UnityEngine.Serialization;
 
-public class UniversalAnimation : CubeAnimation
+namespace JustMobyTest.ViewAnimations
 {
-    [SerializeField] private CubeAnimationPart[] animationParts;
-    
-    protected override Tween PlayInternal(UIView view, Vector3 targetPoint)
+    public class UniversalAnimation : CubeAnimation
     {
-        var sequence = DOTween.Sequence();
-
-        foreach (var part in animationParts)
+        [SerializeField] private CubeAnimationPart[] animationParts;
+    
+        protected override Tween PlayInternal(UIView view, Vector3 targetPoint)
         {
-            part.RunAnimation(sequence, view, targetPoint);
+            var sequence = DOTween.Sequence();
+
+            foreach (var part in animationParts)
+            {
+                part.RunAnimation(sequence, view, targetPoint);
+            }
+
+            return sequence.OnKill(OnAnimationEnded);
         }
 
-        return sequence.OnKill(OnAnimationEnded);
-    }
-
-    protected override void OnAnimationEnded()
-    {
+        protected override void OnAnimationEnded()
+        {
      
+        }
     }
 }
