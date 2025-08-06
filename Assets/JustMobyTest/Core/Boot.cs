@@ -1,5 +1,6 @@
 using System.Threading;
 using Cysharp.Threading.Tasks;
+using JustMobyTest.UI;
 using UnityEngine;
 using Zenject;
 
@@ -21,6 +22,24 @@ namespace JustMobyTest.Core
             if (_gameServices)
             {
                 await _gameServices.Init(saveDataKey);
+
+
+                var loadingTextID = new GameTextID
+                {
+                    CategoryID = TextCategoryID.General,
+                    TextID = TextID.Loading
+                };
+
+                var gameData = await _gameServices.GameConfigService
+                    .GetGameConfigData(CancellationToken.None);
+
+                if (gameData.GameTextsConfig.TryGetTextByID(loadingTextID, out var loadingText))
+                {
+                    var loadingScreen = _gameServices.UISystem.GetScreen<LoadingScreen>();
+                    loadingScreen.ScreenHeader = loadingText;
+                    loadingScreen.Show(true);
+                }
+
                 _gameServices.SceneManageService.LoadGameScene();
             }
             else

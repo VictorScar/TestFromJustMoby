@@ -8,7 +8,7 @@ namespace JustMobyTest.Core
     public class GameServices : MonoBehaviour
     {
         [SerializeField] private UISystem uiSystem;
-        [SerializeField] private ScriptableObjectGameConfigService gameConfigService;
+        [SerializeField] private SOGameConfigService gameConfigService;
         [SerializeField] private SceneManageService sceneManageService;
         private IProgressDataService _progressDataService;
 

@@ -7,7 +7,7 @@ namespace JustMobyTest.Injections
     public class GameServicesInstaller : MonoInstaller
     {
         [SerializeField] private GameServices gameServicesPrefab;
-
+      
         public override void InstallBindings()
         {
             var instance = Container.InstantiatePrefab(gameServicesPrefab);

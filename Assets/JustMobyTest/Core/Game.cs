@@ -3,6 +3,7 @@ using System.Threading;
 using Cysharp.Threading.Tasks;
 using JustMobyTest.Configs._Data;
 using JustMobyTest.Core;
+using JustMobyTest.UI;
 using UnityEngine;
 using Zenject;
 
@@ -32,7 +33,7 @@ public class Game : MonoBehaviour
         var cubesConfigData = gameConfigData.CubesConfigData;
         dragController.Init(cubesConfigData, gameConfigData.CubeSize);
         var gameScreen = _gameServices.UISystem.GetScreen<GameScreen>();
-        gameScreen.Show();
+        gameScreen.Show(true);
         var towerView = gameScreen.TowerView;
         towerView.CubeSize = gameConfigData.CubeSize;
         scrollbarConroller.Init(dragController, gameConfigData.CubesConfigData);
@@ -41,5 +42,8 @@ public class Game : MonoBehaviour
         towerController.Init(gameConfigData, towerView, _gameServices.ProgressDataService, dragController);
         notificationController.Init(towerController, holeAreaController, gameScreen.NotificationPanel,
             gameConfigData.GameTextsConfig);
+        
+        _gameServices.UISystem.GetScreen<LoadingScreen>().Hide();
+       
     }
 }

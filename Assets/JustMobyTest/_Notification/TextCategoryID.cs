@@ -5,5 +5,6 @@ using UnityEngine;
 public enum TextCategoryID
 {
     None,
-    CubeActions
+    CubeActions,
+    General
 }

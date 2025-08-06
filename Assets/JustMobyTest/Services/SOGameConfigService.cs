@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace JustMobyTest.Services
 {
-    public class ScriptableObjectGameConfigService : MonoBehaviour, IGameConfigService
+    public class SOGameConfigService : MonoBehaviour, IGameConfigService
     {
         [SerializeField] private GameConfig gameConfig;
 

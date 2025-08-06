@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using JustMobyTest.Core;
+using JustMobyTest.UI;
 using ScarFramework.UI;
 using UnityEngine;
 using UnityEngine.EventSystems;
