@@ -11,19 +11,19 @@ public class NotificationController : MonoBehaviour
     [SerializeField] private float showTime = 3f;
     [SerializeField] private FailReasonTextIDData[] idMatchingDatas;
 
-    private GameTextConfig _textConfig;
+    private GameTextsConfig _textsConfig;
     private NotificationPanel _notificationPanel;
     private TowerController _towerController;
     private HoleAreaController _holeAreaController;
     private CancellationTokenSource _taskCancelation;
 
     public void Init(TowerController towerController, HoleAreaController holeAreaController,
-        NotificationPanel notificationPanel, GameTextConfig textConfig)
+        NotificationPanel notificationPanel, GameTextsConfig textsConfig)
     {
         _notificationPanel = notificationPanel;
         _towerController = towerController;
         _holeAreaController = holeAreaController;
-        _textConfig = textConfig;
+        _textsConfig = textsConfig;
 
         _towerController.onCubeAdded += OnCubeAddedInTower;
         _towerController.onCubeRemoved += OnCubeRemovedFromTower;
@@ -56,7 +56,7 @@ public class NotificationController : MonoBehaviour
 
     private void OnCubeAddedInTower()
     {
-        if (_textConfig.TryGetTextByID(
+        if (_textsConfig.TryGetTextByID(
                 new GameTextID { CategoryID = TextCategoryID.CubeActions, TextID = TextID.CubeAdded }, out var text))
         {
             ShowNotification(text);
@@ -65,7 +65,7 @@ public class NotificationController : MonoBehaviour
 
     private void OnCubeRemovedFromTower()
     {
-        if (_textConfig.TryGetTextByID(
+        if (_textsConfig.TryGetTextByID(
                 new GameTextID { CategoryID = TextCategoryID.CubeActions, TextID = TextID.CubeRemoved }, out var text))
         {
             ShowNotification(text);
@@ -76,7 +76,7 @@ public class NotificationController : MonoBehaviour
     {
         if (TryGetCorrespondenceTextID(reason, out var gameMessageID))
         {
-            if (_textConfig.TryGetTextByID(gameMessageID, out var text))
+            if (_textsConfig.TryGetTextByID(gameMessageID, out var text))
             {
                 ShowNotification(text);
             }
@@ -89,7 +89,7 @@ public class NotificationController : MonoBehaviour
 
         if (!result) textID = new GameTextID { CategoryID = TextCategoryID.CubeActions, TextID = TextID.DontHitHol };
 
-        if (_textConfig.TryGetTextByID(textID, out var text))
+        if (_textsConfig.TryGetTextByID(textID, out var text))
         {
             ShowNotification(text);
         }
@@ -97,7 +97,7 @@ public class NotificationController : MonoBehaviour
     
     private void OnWrongDragToHole()
     {
-        if (_textConfig.TryGetTextByID(
+        if (_textsConfig.TryGetTextByID(
                 new GameTextID { CategoryID = TextCategoryID.CubeActions, TextID = TextID.WrongDragToHol }, out var text))
         {
             ShowNotification(text);

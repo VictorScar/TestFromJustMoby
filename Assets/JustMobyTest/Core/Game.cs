@@ -1,34 +1,29 @@
-using System.Collections;
-using System.Collections.Generic;
-using ScarFramework.UI;
+using JustMobyTest.Configs._Data;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 public class Game : MonoBehaviour
 {
-    private TowerCubesConfig _cubeesConfig;
-
-    [SerializeField] private GameTextConfig gameTextConfig;
     [SerializeField] private ScrollbarConroller scrollbarConroller;
     [SerializeField] private DragController dragController;
     [SerializeField] private TowerController towerController;
     [SerializeField] private HoleAreaController holeAreaController;
     [SerializeField] private NotificationController notificationController;
-    [SerializeField] private SaveDataController saveDataController;
-    [SerializeField] private TowerData towerData;
 
-    public void StartGame(TowerCubesConfig cubesConfig)
+    private GameServices _gameServices;
+    
+    
+    public void StartGame(GameConfigData gameConfigData)
     {
-        _cubeesConfig = cubesConfig;
-        dragController.Init(cubesConfig, cubesConfig.CubeSize);
+        var cubesConfigData = gameConfigData.CubesConfigData;
+        dragController.Init(cubesConfigData, gameConfigData.CubeSize);
         var gameScreen = GameServices.I.UISystem.GetScreen<GameScreen>();
         gameScreen.Show();
         var towerView = gameScreen.TowerView;
-        towerView.CubeSize = cubesConfig.CubeSize;
-        scrollbarConroller.Init(dragController, _cubeesConfig);
-        holeAreaController.Init(cubesConfig, gameScreen.HoleArea);
+        towerView.CubeSize = gameConfigData.CubeSize;
+        scrollbarConroller.Init(dragController, gameConfigData.CubesConfigData);
+        holeAreaController.Init(cubesConfigData, gameConfigData.CubeSize, gameScreen.HoleArea);
 
-        towerController.Init(cubesConfig, towerView, saveDataController, dragController);
-        notificationController.Init(towerController, holeAreaController, gameScreen.NotificationPanel, gameTextConfig);
+        towerController.Init(gameConfigData, towerView, _gameServices.ProgressDataService, dragController);
+        notificationController.Init(towerController, holeAreaController, gameScreen.NotificationPanel, gameConfigData.GameTextsConfig);
     }
 }

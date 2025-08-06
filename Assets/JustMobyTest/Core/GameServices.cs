@@ -1,19 +1,22 @@
 using System.Collections;
 using System.Collections.Generic;
+using JustMobyTest.Services;
 using ScarFramework.UI;
 using UnityEngine;
 
 public class GameServices : MonoBehaviour
 {
     [SerializeField] private UISystem uiSystem;
-    
-    private TowerCubesConfig _cubesConfig;
+    private IProgressDataService _progressDataService;
+    private IGameConfigService _gameConfigService;
 
     public static GameServices I { get; private set; }
     public UISystem UISystem => uiSystem;
-    public TowerCubesConfig Config => _cubesConfig;
+    public IGameConfigService GameConfigService => _gameConfigService;
+   
+    public IProgressDataService ProgressDataService => _progressDataService;
 
-    public void Init(TowerCubesConfig cubesesConfig)
+    public void Init()
     {
         if (!I)
         {
@@ -23,8 +26,8 @@ public class GameServices : MonoBehaviour
         {
             Destroy(gameObject);
         }
-
-        _cubesConfig = cubesesConfig;
+        
         uiSystem.Init();
+        _progressDataService = new LocalProgressDataService("");
     }
 }

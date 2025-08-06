@@ -1,19 +1,20 @@
 using System;
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
+using JustMobyTest.Configs._Data;
 using UnityEngine;
 
 public class TowerController : MonoBehaviour
 {
     [SerializeField] private Tower _tower;
-    [SerializeField] private float minVerticalOffset = 0.5f;
     private ICubeValidator[] _validators;
 
+    private Vector2 _cubeSize;
     private TowerView _towerView;
     private DragController _dragController;
     private List<TowerCubePair> _cubePairs = new List<TowerCubePair>();
-    private TowerCubesConfig _cubesConfig;
-    private SaveDataController _saveDataController;
+    private CubesConfigData _cubesConfigData;
+    private IProgressDataService _localProgressDataService;
     public event Action onCubeAdded;
     public event Action onCubeRemoved;
     public event Action<FailureReason> onCubeFall;
@@ -29,21 +30,23 @@ public class TowerController : MonoBehaviour
 
         ClearCubes();
     }
-    
-    public async UniTask Init(TowerCubesConfig cubesConfig, TowerView view, SaveDataController saveDataController, DragController dragController)
+
+    public async UniTask Init(GameConfigData gameConfigData, TowerView view,
+        IProgressDataService localProgressDataService, DragController dragController)
     {
-        _cubesConfig = cubesConfig;
+        _cubesConfigData = gameConfigData.CubesConfigData;
+        _cubeSize = gameConfigData.CubeSize;
         _towerView = view;
         _dragController = dragController;
-        _saveDataController = saveDataController;
+        _localProgressDataService = localProgressDataService;
 
-        var towerData = await _saveDataController.LoadData();
-        
+        var towerData = await _localProgressDataService.LoadData();
+
         _validators = new ICubeValidator[]
         {
-            new TowerHeightValidator(_cubesConfig.CubeSize.y, _towerView.Rect.rect.size.y),
-            new XPositionValidator(_cubesConfig.CubeSize.x),
-            new HeightCubeValidator(minVerticalOffset)
+            new TowerHeightValidator(gameConfigData.CubeSize.y, _towerView.Rect.rect.size.y),
+            new XPositionValidator(gameConfigData.CubeSize.x),
+            new HeightCubeValidator(gameConfigData.MinYCubeOffset)
         };
 
         _tower = new Tower(_validators);
@@ -54,12 +57,21 @@ public class TowerController : MonoBehaviour
 
         SetStartCubeData(towerData);
     }
-    
 
 
-    private void OnTowerDataUpdated(TowerCube[] towerCubes)
+    private void OnTowerDataUpdated(List<TowerCube> towerCubes)
     {
-        _saveDataController.Data = towerCubes;
+        if (towerCubes != null)
+        {
+            var cubesData = new List<CubeData>();
+
+            foreach (var cube in towerCubes)
+            {
+                cubesData.Add(cube.CubeData);
+            }
+
+            _localProgressDataService.Data = cubesData.ToArray();
+        }
     }
 
     private void SetStartCubeData(TowerData towerData)
@@ -77,30 +89,31 @@ public class TowerController : MonoBehaviour
                     Position = new Vector2(info.XPosition, i)
                 };
 
-                if (_cubesConfig.TryGetData(data.CubeType, out var cubeConfigData))
+                if (_cubesConfigData.TryGetData(data.CubeType, out var cubeConfigData))
                 {
-                    var view = _towerView.AddCubeView(cubeConfigData.Image);
-                    view.Size = _cubesConfig.CubeSize;
+                    var view = AddView(cubeConfigData.CubeType);
+                    /*var view = _towerView.AddCubeView(cubeConfigData.Image);
+                    view.Size = _cubeSize;*/
 
 
                     if (_tower.TryAddCube(data, out var newCube, out var failtureReason))
                     {
                         AddCubePair(newCube, view);
-                        view.SetPosition(new Vector2(newCube.XPos, newCube.Height * _cubesConfig.CubeSize.y));
+                        view.SetPosition(new Vector2(newCube.XPos, newCube.Height * _cubeSize.y));
                     }
                 }
             }
         }
     }
 
-    private void TryAddCube(CubeConfigData cubeConfigData, Vector3 pos, DragSourceType dragSourceType)
+    private void TryAddCube(CubeConfig cubeConfig, Vector3 pos, DragSourceType dragSourceType)
     {
-        var view = AddView(cubeConfigData.CubeType);
+        var view = AddView(cubeConfig.CubeType);
         var relativePosition = _towerView.Rect.InverseTransformPoint(pos);
         var cubeData = new CubeData
         {
-            CubeType = cubeConfigData.CubeType,
-            Position = new Vector2(relativePosition.x, relativePosition.y / _cubesConfig.CubeSize.y)
+            CubeType = cubeConfig.CubeType,
+            Position = new Vector2(relativePosition.x, relativePosition.y / _cubeSize.y)
         };
 
         if (view)
@@ -111,7 +124,7 @@ public class TowerController : MonoBehaviour
             {
                 AddCubePair(cube, view);
                 onCubeAdded?.Invoke();
-                view.SetPosition(new Vector2(cube.XPos, cube.Height * _cubesConfig.CubeSize.y), false);
+                view.SetPosition(new Vector2(cube.XPos, cube.Height * _cubeSize.y), false);
             }
             else
             {
@@ -130,7 +143,7 @@ public class TowerController : MonoBehaviour
         _cubePairs.Remove(cubePair);
 
         onCubeRemoved?.Invoke();
-        
+
         UpdateCubesStates(removeCubeHeight);
         UpdateViewsPositions(removeCubeHeight);
     }
@@ -148,12 +161,12 @@ public class TowerController : MonoBehaviour
             };
 
 
-            if (!_tower.ValidateAddition(validatedCubeData, out var reason, isNewCube:false))
+            if (!_tower.ValidateAddition(validatedCubeData, out var reason, isNewCube: false))
             {
                 RemoveCube(_cubePairs[removeCubeHeight]);
                 var view = AddView(validatedCubeData.CubeType);
                 view.SetPosition(new Vector2(validatedCubeData.Position.x,
-                    validatedCubeData.Position.y * _cubesConfig.CubeSize.y));
+                    validatedCubeData.Position.y * _cubeSize.y));
                 view.Fall();
                 onCubeFall?.Invoke(reason);
             }
@@ -166,16 +179,16 @@ public class TowerController : MonoBehaviour
         {
             var view = _cubePairs[i].View;
             view.SetPosition(new Vector2(view.Rect.anchoredPosition.x,
-                _cubePairs[i].Model.Height * _cubesConfig.CubeSize.y), false);
+                _cubePairs[i].Model.Height * _cubeSize.y), false);
         }
     }
 
     private TowerCubeView AddView(TowerCubeType cubeType)
     {
-        if (_cubesConfig.TryGetData(cubeType, out var cubeConfig))
+        if (_cubesConfigData.TryGetData(cubeType, out var cubeConfig))
         {
             var view = _towerView.AddCubeView(cubeConfig.Image);
-            view.Size = _cubesConfig.CubeSize;
+            view.Size = _cubeSize;
 
             return view;
         }
@@ -235,6 +248,4 @@ public class TowerController : MonoBehaviour
         _cubePairs.Clear();
         _towerView?.ClearViews();
     }
-
-
 }

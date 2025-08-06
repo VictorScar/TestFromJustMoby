@@ -1,15 +1,19 @@
-using System.Collections;
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using Newtonsoft.Json;
 using UnityEngine;
 
-public class SaveDataController : MonoBehaviour
+public class LocalProgressDataService : IProgressDataService
 {
-    [SerializeField] private string saveDataKey = "CubesSaveData";
+    private string _saveDataKey = "CubesSaveData";
     private TowerData _data;
 
-    public TowerCube[] Data
+    public LocalProgressDataService(string saveDataKey)
+    {
+        _saveDataKey = saveDataKey;
+    }
+    
+    public CubeData[] Data
     {
         set
         {
@@ -22,8 +26,8 @@ public class SaveDataController : MonoBehaviour
                     saveData.Add(new CubeDataInfo
                     {
                         CubeType = cube.CubeType,
-                        XPosition = cube.XPos,
-                        Height = cube.Height
+                        XPosition = cube.Position.x,
+                        Height = Mathf.CeilToInt(cube.Position.y)
                     });
                 }
 
@@ -39,10 +43,10 @@ public class SaveDataController : MonoBehaviour
 
     public UniTask<TowerData> LoadData()
     {
-        if (PlayerPrefs.HasKey(saveDataKey))
+        if (PlayerPrefs.HasKey(_saveDataKey))
         {
-            var loadedJson = PlayerPrefs.GetString(saveDataKey);
-            Debug.Log(loadedJson);
+            var loadedJson = PlayerPrefs.GetString(_saveDataKey);
+//            Debug.Log(loadedJson);
             _data = JsonConvert.DeserializeObject<TowerData>(loadedJson);
         }
         else
@@ -52,19 +56,18 @@ public class SaveDataController : MonoBehaviour
 
         return UniTask.FromResult(_data);
     }
+    
+    public void ResetSaves()
+    {
+        _data = new TowerData();
+        PlayerPrefs.DeleteKey(_saveDataKey);
+    }
 
     private void Save()
     {
         var json = JsonConvert.SerializeObject(_data);
-        Debug.Log(json);
-        PlayerPrefs.SetString(saveDataKey, json);
+//        Debug.Log(json);
+        PlayerPrefs.SetString(_saveDataKey, json);
         PlayerPrefs.Save();
-        Debug.Log(PlayerPrefs.HasKey(saveDataKey));
-    }
-
-    public void ResetSaves()
-    {
-        _data = new TowerData();
-        PlayerPrefs.DeleteKey(saveDataKey);
     }
 }

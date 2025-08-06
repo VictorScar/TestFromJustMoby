@@ -1,5 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -7,13 +9,22 @@ public class Boot : MonoBehaviour
 {
     [SerializeField] private GameServices gameServices;
     [SerializeField] private Game game;
-    [FormerlySerializedAs("cubesConfig")] [SerializeField] private TowerCubesConfig cubesesConfig;
+
+    private CancellationTokenSource _gameCancellationToken;
+   
     void Start()
     {
-        gameServices.Init(cubesesConfig);
+        InitGameServices();
+       
+    }
+
+    private async UniTask InitGameServices()
+    {
+        gameServices.Init();
         DontDestroyOnLoad(gameServices.gameObject);
-        
-        game.StartGame(cubesesConfig);
+
+        var gameConfigData = await gameServices.GameConfigService.GetGameConfigData(_gameCancellationToken.Token);
+        game.StartGame(gameConfigData);
     }
 
 }

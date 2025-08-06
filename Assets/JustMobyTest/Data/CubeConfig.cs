@@ -4,17 +4,17 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [Serializable]
-public struct CubeConfigData
+public struct CubeConfig
 {
     public TowerCubeType CubeType;
     public Sprite Image;
 
-    public CubeConfigData(TowerCubeType cubeType, Sprite image = null)
+    public CubeConfig(TowerCubeType cubeType, Sprite image = null)
     {
         CubeType = cubeType;
         Image = image;
     }
 
-    public static CubeConfigData Invalid => new CubeConfigData(TowerCubeType.None);
+    public static CubeConfig Invalid => new CubeConfig(TowerCubeType.None);
     public bool IsInvalid => CubeType == TowerCubeType.None;
 }

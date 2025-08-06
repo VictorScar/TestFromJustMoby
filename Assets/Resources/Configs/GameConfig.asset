@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b8d37459764c374abe6c775c6c56f85, type: 3}
+  m_Name: GameConfig
+  m_EditorClassIdentifier: 
+  cubesConfig: {fileID: 11400000, guid: 57a40522c849e8044ae6d7299381e067, type: 2}
+  gameTextsConfig: {fileID: 11400000, guid: cdc04229a63946342a8148b4d927701a, type: 2}
+  cubeSize: {x: 50, y: 50}
+  maxCubeXOffset: 0.5
+  maxCubeYOffset: 0.6
+  notificationShowTime: 2

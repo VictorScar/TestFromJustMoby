@@ -9,7 +9,7 @@ public class Tower
     [SerializeField] private List<TowerCube> cubesInTower = new List<TowerCube>();
    
     private ICubeValidator[] _validators;
-    public event Action<TowerCube[]> onDataUpdated;
+    public event Action<List<TowerCube>> onDataUpdated;
 
     public Tower(ICubeValidator[] validators)
     {
@@ -37,7 +37,7 @@ public class Tower
             Height = cubesInTower.Count
         };
         cubesInTower.Add(cube);
-        onDataUpdated?.Invoke(cubesInTower.ToArray());
+        onDataUpdated?.Invoke(cubesInTower);
 
         return cube;
     }
@@ -76,6 +76,6 @@ public class Tower
         }
 
         cubesInTower.Remove(cube);
-        onDataUpdated?.Invoke(cubesInTower.ToArray());
+        onDataUpdated?.Invoke(cubesInTower);
     }
 }

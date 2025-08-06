@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "GameConfigs/GameTexts/GameTextConfig", fileName = "GameTextConfig")]
-public class GameTextConfig : ScriptableObject
+public class GameTextsConfig : ScriptableObject
 {
     [SerializeField] private TextByCategoryConfig[] textCategories;
     

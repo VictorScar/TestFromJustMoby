@@ -7,14 +7,14 @@ using UnityEngine;
 public class HoleView : UIView, IInteractableElement
 {
     [SerializeField] private RectTransform uploadPoint;
-    public event Action<CubeConfigData, Vector3, DragSourceType> onPutElement;
+    public event Action<CubeConfig, Vector3, DragSourceType> onPutElement;
     public Vector2 UploadPoint => uploadPoint.anchoredPosition;
 
-    public bool TryPutElement(CubeConfigData elementConfigData, Vector3 elementPosition, DragSourceType dragSourceType)
+    public bool TryPutElement(CubeConfig elementConfig, Vector3 elementPosition, DragSourceType dragSourceType)
     {
         if (dragSourceType == DragSourceType.FromTower)
         {
-            onPutElement?.Invoke(elementConfigData, elementPosition, dragSourceType);
+            onPutElement?.Invoke(elementConfig, elementPosition, dragSourceType);
             return true;
         }
 

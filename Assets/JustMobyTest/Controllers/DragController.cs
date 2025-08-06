@@ -1,20 +1,18 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
 public class DragController : MonoBehaviour
 {
+    [SerializeField] private DragSourceType _dragSourceType;
+
     private DragViewPanel _viewPanel;
     private EventSystem _eventSystem;
-
-    private CubeConfigData _elementConfigData;
+    private CubeConfig _elementConfig;
     private bool _isDragging = false;
     private bool _isInitialized;
-    private TowerCubesConfig _towerCubesConfig;
+    private CubesConfigData _cubesConfigData;
 
-    public DragSourceType _dragSourceType;
 
     private void Update()
     {
@@ -34,9 +32,9 @@ public class DragController : MonoBehaviour
        
     }
 
-    public void Init(TowerCubesConfig towerCubesConfig, Vector2 cubeSize)
+    public void Init(CubesConfigData cubesConfigData, Vector2 cubeSize)
     {
-        _towerCubesConfig = towerCubesConfig;
+        _cubesConfigData = cubesConfigData;
         _eventSystem = GameServices.I.UISystem.EventSystem;
         _viewPanel = GameServices.I.UISystem.GetScreen<GameScreen>().DragViewPanel;
         _viewPanel.Rect.sizeDelta = cubeSize;
@@ -45,10 +43,10 @@ public class DragController : MonoBehaviour
 
     public void StartDrag(TowerCubeType cubeType, DragSourceType dragSourceType)
     {
-        if (_towerCubesConfig.TryGetData(cubeType, out var cubeData))
+        if (_cubesConfigData.TryGetData(cubeType, out var cubeData))
         {
             _dragSourceType = dragSourceType;
-            _elementConfigData = cubeData;
+            _elementConfig = cubeData;
             _viewPanel.Icon = cubeData.Image;
             _isDragging = true;
         }
@@ -57,14 +55,14 @@ public class DragController : MonoBehaviour
     public void EndDragElement()
     {
         _viewPanel.IsVisible = false;
-        TryPutElement(_elementConfigData, Input.mousePosition, _dragSourceType);
-        _elementConfigData = CubeConfigData.Invalid;
+        TryPutElement(_elementConfig, Input.mousePosition, _dragSourceType);
+        _elementConfig = CubeConfig.Invalid;
         _isDragging = false;
         _dragSourceType = DragSourceType.None;
     }
 
 
-    private bool TryPutElement(CubeConfigData elementConfigData, Vector3 elementPosition, DragSourceType dragSourceType)
+    private bool TryPutElement(CubeConfig elementConfig, Vector3 elementPosition, DragSourceType dragSourceType)
     {
         var pointerData = new PointerEventData(_eventSystem)
         {
@@ -78,7 +76,7 @@ public class DragController : MonoBehaviour
         {
             if (result.gameObject.TryGetComponent<IInteractableElement>(out var interactable))
             {
-                return interactable.TryPutElement(elementConfigData, elementPosition, dragSourceType);
+                return interactable.TryPutElement(elementConfig, elementPosition, dragSourceType);
             }
         }
 

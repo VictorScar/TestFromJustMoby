@@ -11,17 +11,17 @@ public class ScrollbarConroller : MonoBehaviour
     private ScrollPanelView _scrollPanel;
     private DragController _dragController;
 
-    private Dictionary<UIDragable, CubeConfigData> _scrollCubes = new Dictionary<UIDragable, CubeConfigData>();
+    private Dictionary<UIDragable, CubeConfig> _scrollCubes = new Dictionary<UIDragable, CubeConfig>();
 
-    public void Init(DragController dragController, TowerCubesConfig cubesesConfig)
+    public void Init(DragController dragController, CubesConfigData cubesConfigData)
     {
         _dragController = dragController;
         _scrollPanel = GameServices.I.UISystem.GetScreen<GameScreen>().ScrollViewPanel;
         ClearScrollViews();
-        CreateScrollElements(cubesesConfig.CubeDatas);
+        CreateScrollElements(cubesConfigData.CubeConfigs);
     }
 
-    private void CreateScrollElements(CubeConfigData[] cubeDatas)
+    private void CreateScrollElements(CubeConfig[] cubeDatas)
     {
         if (cubeDatas != null)
         {
@@ -32,11 +32,11 @@ public class ScrollbarConroller : MonoBehaviour
         }
     }
 
-    private void CreateViewElement(CubeConfigData elementConfigData)
+    private void CreateViewElement(CubeConfig elementConfig)
     {
-        var view = _scrollPanel.CreateView(elementConfigData.Image);
+        var view = _scrollPanel.CreateView(elementConfig.Image);
         view.onBeginDrag += OnCubeStartDragging;
-        _scrollCubes.Add(view, elementConfigData);
+        _scrollCubes.Add(view, elementConfig);
     }
 
     private void OnCubeStartDragging(PointerEventData eventData, UIDragable view)
@@ -47,15 +47,15 @@ public class ScrollbarConroller : MonoBehaviour
         }
     }
 
-    private bool TryGetCubeData(UIDragable view, out CubeConfigData cubeConfigData)
+    private bool TryGetCubeData(UIDragable view, out CubeConfig cubeConfig)
     {
         if (_scrollCubes.TryGetValue(view, out var data))
         {
-            cubeConfigData = data;
+            cubeConfig = data;
             return true;
         }
 
-        cubeConfigData = CubeConfigData.Invalid;
+        cubeConfig = CubeConfig.Invalid;
         return false;
     }
 

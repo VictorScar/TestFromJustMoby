@@ -1,31 +1,29 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class HoleAreaController : MonoBehaviour
 {
     private HoleViewArea _holeArea;
     private HoleView _hole;
-    private TowerCubesConfig _cubesConfig;
+    private CubesConfigData _cubesConfigData;
     public event Action<bool> onUploadCube;
     public event Action onWrongDragSource;
 
-    public void Init(TowerCubesConfig cubesConfig, HoleViewArea holeViewArea)
+    public void Init(CubesConfigData cubesConfigData, Vector2 cubeSize, HoleViewArea holeViewArea)
     {
-        _cubesConfig = cubesConfig;
+        _cubesConfigData = cubesConfigData;
         _holeArea = holeViewArea;
-        _holeArea.CubeSize = cubesConfig.CubeSize;
+        _holeArea.CubeSize = cubeSize;
         _hole = _holeArea.Hole;
         _holeArea.onPutElement += CreateFallingCube;
         _hole.onPutElement += UploadCube;
     }
 
-    private void CreateFallingCube(CubeConfigData configData, Vector3 elementPos, DragSourceType dragSourceType)
+    private void CreateFallingCube(CubeConfig config, Vector3 elementPos, DragSourceType dragSourceType)
     {
         if (dragSourceType == DragSourceType.FromTower)
         {
-            if (_cubesConfig.TryGetData(configData.CubeType, out var cubeData))
+            if (_cubesConfigData.TryGetData(config.CubeType, out var cubeData))
             {
                 var view = _holeArea.AddCubeView(cubeData.Image);
                 var relativePosition = _holeArea.Rect.InverseTransformPoint(elementPos);
@@ -40,11 +38,11 @@ public class HoleAreaController : MonoBehaviour
         }
     }
 
-    private void UploadCube(CubeConfigData configData, Vector3 elementPos,DragSourceType dragSourceType)
+    private void UploadCube(CubeConfig config, Vector3 elementPos,DragSourceType dragSourceType)
     {
         if (dragSourceType == DragSourceType.FromTower)
         {
-            if (_cubesConfig.TryGetData(configData.CubeType, out var cubeData))
+            if (_cubesConfigData.TryGetData(config.CubeType, out var cubeData))
             {
                 var view = _holeArea.AddCubeView(cubeData.Image);
                 var relativePosition = _holeArea.Rect.InverseTransformPoint(elementPos);
