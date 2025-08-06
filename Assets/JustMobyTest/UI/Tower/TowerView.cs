@@ -43,9 +43,13 @@ public class TowerView : UIView, IInteractableElement
 
     public void RemoveCubeView(TowerCubeView view)
     {
-        _views.Remove(view);
-        view.onBeginDrag -= OnDragCube;
-        Destroy(view.gameObject);
+        if (view)
+        {
+            _views.Remove(view);
+            view.onBeginDrag -= OnDragCube;
+            Destroy(view.gameObject);
+        }
+   
     }
 
     protected override void OnInit()

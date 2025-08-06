@@ -1,30 +1,32 @@
-using System.Collections;
-using System.Collections.Generic;
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
-using UnityEngine.Serialization;
+using Zenject;
 
-public class Boot : MonoBehaviour
+namespace JustMobyTest.Core
 {
-    [SerializeField] private GameServices gameServices;
-    [SerializeField] private Game game;
-
-    private CancellationTokenSource _gameCancellationToken;
-   
-    void Start()
+    public class Boot : MonoBehaviour
     {
-        InitGameServices();
-       
+        [Inject] private GameServices _gameServices;
+        [SerializeField] private string saveDataKey = "gameDataKey";
+
+
+        void Start()
+        {
+            Initialize();
+        }
+
+        private async UniTask Initialize()
+        {
+            if (_gameServices)
+            {
+                await _gameServices.Init(saveDataKey);
+                _gameServices.SceneManageService.LoadGameScene();
+            }
+            else
+            {
+                Debug.LogError("Game service prefab is not assigned!");
+            }
+        }
     }
-
-    private async UniTask InitGameServices()
-    {
-        gameServices.Init();
-        DontDestroyOnLoad(gameServices.gameObject);
-
-        var gameConfigData = await gameServices.GameConfigService.GetGameConfigData(_gameCancellationToken.Token);
-        game.StartGame(gameConfigData);
-    }
-
 }

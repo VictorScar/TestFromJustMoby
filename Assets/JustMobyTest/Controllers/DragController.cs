@@ -1,6 +1,8 @@
 using System.Collections.Generic;
+using JustMobyTest.Core;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using Zenject;
 
 public class DragController : MonoBehaviour
 {
@@ -13,7 +15,8 @@ public class DragController : MonoBehaviour
     private bool _isInitialized;
     private CubesConfigData _cubesConfigData;
 
-
+    [Inject] private GameServices _gameServices;
+    
     private void Update()
     {
         if (!_isInitialized) return;
@@ -35,8 +38,8 @@ public class DragController : MonoBehaviour
     public void Init(CubesConfigData cubesConfigData, Vector2 cubeSize)
     {
         _cubesConfigData = cubesConfigData;
-        _eventSystem = GameServices.I.UISystem.EventSystem;
-        _viewPanel = GameServices.I.UISystem.GetScreen<GameScreen>().DragViewPanel;
+        _eventSystem = _gameServices.UISystem.EventSystem;
+        _viewPanel = _gameServices.UISystem.GetScreen<GameScreen>().DragViewPanel;
         _viewPanel.Rect.sizeDelta = cubeSize;
         _isInitialized = true;
     }

@@ -1,9 +1,11 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using JustMobyTest.Core;
 using ScarFramework.UI;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using Zenject;
 
 public class ScrollbarConroller : MonoBehaviour
 {
@@ -11,12 +13,14 @@ public class ScrollbarConroller : MonoBehaviour
     private ScrollPanelView _scrollPanel;
     private DragController _dragController;
 
+    [Inject] private GameServices _gameServices;
+
     private Dictionary<UIDragable, CubeConfig> _scrollCubes = new Dictionary<UIDragable, CubeConfig>();
 
     public void Init(DragController dragController, CubesConfigData cubesConfigData)
     {
         _dragController = dragController;
-        _scrollPanel = GameServices.I.UISystem.GetScreen<GameScreen>().ScrollViewPanel;
+        _scrollPanel = _gameServices.UISystem.GetScreen<GameScreen>().ScrollViewPanel;
         ClearScrollViews();
         CreateScrollElements(cubesConfigData.CubeConfigs);
     }

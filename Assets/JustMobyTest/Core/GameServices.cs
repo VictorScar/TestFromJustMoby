@@ -1,33 +1,29 @@
-using System.Collections;
-using System.Collections.Generic;
+using Cysharp.Threading.Tasks;
 using JustMobyTest.Services;
 using ScarFramework.UI;
 using UnityEngine;
 
-public class GameServices : MonoBehaviour
+namespace JustMobyTest.Core
 {
-    [SerializeField] private UISystem uiSystem;
-    private IProgressDataService _progressDataService;
-    private IGameConfigService _gameConfigService;
-
-    public static GameServices I { get; private set; }
-    public UISystem UISystem => uiSystem;
-    public IGameConfigService GameConfigService => _gameConfigService;
-   
-    public IProgressDataService ProgressDataService => _progressDataService;
-
-    public void Init()
+    public class GameServices : MonoBehaviour
     {
-        if (!I)
+        [SerializeField] private UISystem uiSystem;
+        [SerializeField] private ScriptableObjectGameConfigService gameConfigService;
+        [SerializeField] private SceneManageService sceneManageService;
+        private IProgressDataService _progressDataService;
+
+        public UISystem UISystem => uiSystem;
+        public SceneManageService SceneManageService => sceneManageService;
+        public IGameConfigService GameConfigService => gameConfigService;
+
+        public IProgressDataService ProgressDataService => _progressDataService;
+
+        public UniTask Init(string saveDataKey)
         {
-            I = this;
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
+            uiSystem.Init();
+            _progressDataService = new LocalProgressDataService(saveDataKey);
         
-        uiSystem.Init();
-        _progressDataService = new LocalProgressDataService("");
+            return UniTask.CompletedTask;
+        }
     }
 }
